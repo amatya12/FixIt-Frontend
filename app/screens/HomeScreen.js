@@ -43,7 +43,7 @@ HomeScreen.navigationOptions = {
 function WelcomeNotice() {
   return (
       <Text style={styles.welcomeText}>
-        Welcome to FixIt!
+    Welcome to fixit
       </Text>
   );
 }

@@ -74,17 +74,6 @@ export default StyleSheet.create({
 
 
     },
-    buttonText:{
-        padding:10,
-        fontSize: 14,
-        color: 'rgba(247,247,247,0.4)',
-        lineHeight: 20,
-        textAlign: 'center',
-
-    },
-    signUp:{
-        fontSize: 14,
-        color: 'rgb(108,0,54)',
-
-    }
+   
+    
 });
