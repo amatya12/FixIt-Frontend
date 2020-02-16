@@ -10,6 +10,15 @@ import {
 } from 'react-native';
 import styles from '../styles/ViewMap.styles';
 
+
+
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random()*(max-min)) + min;
+
+}
 const screen = Dimensions.get('window');
 
 const ASPECT_RATIO = screen.width / screen.height;
@@ -18,6 +27,29 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 
 export class ViewMap extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            markers: []
+
+        }
+        this.handlePress = this.handlePress.bind(this);
+    }
+        handlePress(e){
+            this.setState({
+                markers: [
+                ... this.state.markers,
+            {
+                coordinate: e.nativeEvent.coordinate,
+                    cost: `$${getRandomInt(50,300)}`
+
+            }
+            ]
+            })
+
+        }
+
 
     render() {
         return (
@@ -30,10 +62,16 @@ export class ViewMap extends React.Component {
                     latitudeDelta: LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA,
                 }}
-                showsUserLocation ={true}
+                showsUserLocation={true}
+                onPress={this.handlePress}
             >
+                {this.state.markers.map((marker) => {
+                    return <Marker {...marker} />
+                })}
 
             </MapView>
         );
+
     }
 }
+
