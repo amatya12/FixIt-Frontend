@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Dimensions,TextInput } from 'react-native';
-import MapView, { Callout,PROVIDER_GOOGLE } from 'react-native-maps';
+import { AppRegistry, StyleSheet, View, Dimensions,TextInput,Button,TouchableOpacity ,Alert,Text,Image } from 'react-native';
+import MapView, { Callout,PROVIDER_GOOGLE,Marker } from 'react-native-maps';
 
 import RetroMapStyles from '../MapStyles/RetroMapStyles.json';
-
+import { FAB } from 'react-native-paper';
 import styles from '../styles/ViewMap.styles';
-import callout from  '../styles/Callout.styles';
-import Circle from '../components/circlebutton';
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
-import styles1 from '../styles/fab.styles';
+// import callout from  '../styles/Callout.styles';
 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon1 from "react-native-vector-icons/FontAwesome5";
+
+
+import openMap from 'react-native-open-maps';
 
 
 let { width, height } = Dimensions.get('window');
@@ -19,6 +20,7 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 export  class ViewMap extends React.Component {
   constructor() {
     super();
@@ -28,9 +30,30 @@ export  class ViewMap extends React.Component {
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
-      }
+      },
+      show : false
+      
+      
     };
+    this.toggleDiv = this.toggleDiv.bind(this)
+    this.autolocate = this.autolocate.bind(this)
+   
   }
+  autolocate() {
+    openMap({ latitude: 37.865101, longitude: -119.538330 });
+  }
+   
+  toggleDiv = () => {
+    const { show } = this.state;
+    this.setState( { show : !show } )
+}
+
+  ButtonClickCheckFunction = () =>{
+
+    Alert.alert("Button Clicked")
+
+  }
+  
   
   render() {
     return (
@@ -41,36 +64,53 @@ export  class ViewMap extends React.Component {
             customMapStyle={ RetroMapStyles }
             showsUserLocation={ true }
             region={ this.state.region }
-            
+            zoomEnabled={true}
+            showsBuildings={true}
+            showsTraffic={true}
+            showsIndoors={true}
+            showsMyLocationButton={true}
+     
             onRegionChangeComplete={ region => this.setState({region}) }
       >
+      
          
-        <MapView.Marker draggable
+        { <MapView.Marker
             coordinate={ this.state.region }
             onDragEnd={(e) => this.setState({ region: e.nativeEvent.coordinate })}
-        />
+        /> }
       </MapView>
-      <View style={styles.map}>
-       
-        <ActionButton 
-        buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-            <Icon name="md-create" style={styles1.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
-            <Icon name="md-notifications-off" style={styles1.actionButtonIcon} />
-          </ActionButton.Item>
-          
-        </ActionButton>
-      </View>
-      
+{/*       
       <Callout>
             <View style={callout.calloutView} >
             <TextInput style={callout.calloutSearch}
                 placeholder={"Search"}
             />
             </View>
-         </Callout>
+         </Callout> */}
+         <FAB
+              style={gps.fab}
+              
+              icon="map-marker-plus"
+              onPress={ this.toggleDiv }
+            />
+          <FAB
+              style={fabi.fab}
+              
+              icon="crosshairs-gps"                                                   
+              onPress={this.autolocate }
+            />
+           
+                                                                     
+               
+                { this.state.show && <Box /> }
+               
+                
+                <View style={latlong.fab}>
+        <Text>Latitude:: {this.state.region.latitude}</Text>
+        <Text>Longitude:: {this.state.region.longitude}</Text>
+        {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
+      </View>
+                
         
       </View>
       
@@ -109,5 +149,130 @@ export  class ViewMap extends React.Component {
   }
 }
 
+const gps = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 10,
+    bottom: 50,
+    paddingTop:2,
+    paddingBottom:2,
+    paddingLeft:2,
+    paddingRight:2,
+    backgroundColor:'#ff0000',
+  },
+})
+const fabi = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin:16,
+    right: 16,
+    bottom: 650,
+    backgroundColor:'#ffffff'
+    
+  },
+})
+const ok = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin:16,
+    right: 100,
+    bottom: 100,
+    backgroundColor:'#32CD32'
+    
+  },
+})
+const latlong = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin:16,
+    right: 100,
+    bottom: 50,
+    backgroundColor:'#32CD32'
+    
+  },
+})
+const cancel = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin:16,
+    right: 250,
+    bottom: 100,
+    backgroundColor:'#ff0000'
+    
+  },
+})
+const ico = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin:16,
+    right:175,
+    bottom: 425,
+   
+    
+  },
+})
+const tar = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin:16,
+    right: 165,
+    bottom: 375,
+   
+    
+  },
+})
+class Box extends Component{
+  constructor() {
+    super();
+    this.state = {
+     
+      show : false
+      
+      
+    };
+    this.toggle = this.toggle.bind(this)
+    
+  }
+   
+  toggle = () => {
+    const { show } = this.state;
+    this.setState( { show : !show } )
+}
+  render(){
+      return(
+        <View style={styles.map}>
+           <FAB
+              style={ok.fab}
+              
+              icon="check-circle"
+              onPress={ this.toggle}
+            />
+            { this.state.show && <Form /> }
+           <FAB
+              style={cancel.fab}
+              
+              icon="alpha-x-circle"
+            
+              onPress={ this.toggleDiv }
+            />
+           <Icon1 name="map-pin" style={ico.fab} size={50} color="#000000" />
+           <Icon name="target" style={tar.fab} size={50} color="#000000" />
+  
+        </View>
+        
+       
+      )
+  }
+}
+class Form extends Component{
+  
+  render(){
+      return(
+        <Text>This is good</Text>
+       
+      )
+  }
+}
 
 AppRegistry.registerComponent('ViewMap', () => ViewMap);

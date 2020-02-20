@@ -6,7 +6,7 @@ export default class Circlebutton extends React.Component {
     render() {
         return (
            
-                <CircleButton  size={45} />
+                <CircleButton  size={45}  />
             
         );
     }
