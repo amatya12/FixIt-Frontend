@@ -65,8 +65,10 @@ export class ViewMap extends React.Component {
                 showsUserLocation={true}
                 onPress={this.handlePress}
             >
-                {this.state.markers.map((marker) => {
-                    return <Marker {...marker} />
+                {this.state.markers.map((marker, index) => {
+                    return <Marker
+                            key={index}
+                            {...marker} />
                 })}
 
             </MapView>
