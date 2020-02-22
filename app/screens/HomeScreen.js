@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import styles from '../styles/HomeScreen.styles';
 import images from '../Images';
+import SearchBar from "../components/SearchBar";
 
 
 
@@ -30,6 +31,9 @@ export default function HomeScreen() {
             >We help you to quick fix damaged things in your parish.</Text>
           </View>
         </ScrollView>
+          <ScrollView>
+              <SearchBar/>
+          </ScrollView>
       </View>
   );
 }
