@@ -7,14 +7,14 @@ import {
 } from 'react-native';
 import styles from '../styles/HomeScreen.styles';
 import images from '../Images';
-
 import {ViewMap} from "../components/ViewMap";
+
 
 
 
 export default function HomeScreen() {
   return (
-      <ViewMap />
+      <ViewMap/>
   );
 }
 

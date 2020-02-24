@@ -69,7 +69,8 @@ DamageStack.navigationOptions = {
 DamageStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-
+  HomeStack,
+  LinksStack,
   DamageStack,
 });
 

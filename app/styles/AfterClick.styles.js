@@ -16,31 +16,36 @@ export default StyleSheet.create({
         left: 0
 
     },
-    gps: {
-        position: 'absolute',
-        margin: 16,
-        right: 10,
-        bottom: 50,
-        paddingTop:2,
-        paddingBottom:2,
-        paddingLeft:2,
-        paddingRight:2,
-        backgroundColor:'#ff0000',
-      },
-      compass: {
-        position: 'absolute',
-        margin:16,
-        right: 16,
-        bottom: 650,
-        backgroundColor:'#ffffff'
-        
-      },
-      latlong: {
+    ok: {
         position: 'absolute',
         margin:16,
         right: 100,
-        bottom: 50,
+        bottom: 100,
         backgroundColor:'#32CD32'
+        
+      },
+      cancel: {
+        position: 'absolute',
+        margin:16,
+        right: 250,
+        bottom: 100,
+        backgroundColor:'#ff0000'
+        
+      },
+      mappin: {
+        position: 'absolute',
+        margin:16,
+        right:175,
+        bottom: 425,
+       
+        
+      },
+      target: {
+        position: 'absolute',
+        margin:16,
+        right: 165,
+        bottom: 375,
+       
         
       },
 });
