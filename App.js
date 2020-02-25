@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './app/navigation/AppNavigator';
 import HomeScreen from './app/screens/HomeScreen';
+import DamageScreen from './app/screens/DamageScreen';
 
 
 export default function App(props) {
@@ -24,7 +25,7 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <HomeScreen />
+        <AppNavigator />
      
       </View>
     );

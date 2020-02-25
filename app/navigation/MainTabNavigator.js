@@ -6,7 +6,8 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import DamageScreen from '../screens/DamageScreen';
+
+import Damageroute from './Damageroute';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -51,10 +52,12 @@ LinksStack.navigationOptions = {
 };
 
 LinksStack.path = '';
-
+const screen={
+  
+}
 const DamageStack = createStackNavigator(
   {
-    Damage: DamageScreen,
+    Damage:Damageroute ,
   },
   config
 );

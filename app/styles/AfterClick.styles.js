@@ -20,23 +20,23 @@ export default StyleSheet.create({
         position: 'absolute',
         margin:16,
         right: 100,
-        bottom: 100,
-        backgroundColor:'#32CD32'
+        bottom: 125,
+        backgroundColor:'#F0E9E7'
         
       },
       cancel: {
         position: 'absolute',
         margin:16,
         right: 250,
-        bottom: 100,
-        backgroundColor:'#ff0000'
+        bottom: 125,
+        backgroundColor:'#EBCA10'
         
       },
       mappin: {
         position: 'absolute',
         margin:16,
         right:175,
-        bottom: 425,
+        bottom: 400,
        
         
       },
@@ -44,7 +44,7 @@ export default StyleSheet.create({
         position: 'absolute',
         margin:16,
         right: 165,
-        bottom: 375,
+        bottom: 350,
        
         
       },

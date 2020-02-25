@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
@@ -39,8 +39,8 @@ export default StyleSheet.create({
         position: 'absolute',
         margin:16,
         right: 100,
-        bottom: 50,
-        backgroundColor:'#32CD32'
+        bottom: 20,
+        backgroundColor:'transparent'
         
       },
 });

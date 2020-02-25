@@ -76,7 +76,7 @@ export class ViewMap extends React.Component {
     return (
       <View style={styles.map}>
         <MapView
-          provider={PROVIDER_GOOGLE}
+          
           style={styles.container}
           customMapStyle={RetroMapStyles}
           showsUserLocation={true}
@@ -92,10 +92,10 @@ export class ViewMap extends React.Component {
         >
 
 
-          {/* { <MapView.Marker
+         {/* { <MapView.Marker
             coordinate={ this.state.region }
             onDragEnd={(e) => this.setState({ region: e.nativeEvent.coordinate })}
-        /> } */}
+        /> }  */}
         </MapView>
 
         <FAB

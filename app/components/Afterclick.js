@@ -19,11 +19,13 @@ export class Afterclick extends React.Component {
           
             };
         this.toggle = this.toggle.bind(this)
+           this._onPressAdd = this._onPressAdd.bind(this);    
         
       }
       openModal() {
         this.setState({modalVisible:true});
       }
+     
     
       closeModal() {
         this.setState({modalVisible:false});
@@ -33,13 +35,18 @@ export class Afterclick extends React.Component {
         const { show } = this.state;
         this.setState( { show : !show } )
     }
+    _onPressAdd () {
+      // alert("You add Item");
+      this.refs.addModal.showAddModal();
+  }
     
     render() {
         return (
-            <View style={style.map}>
+            <View>
               <Modal
+              style={styless.container}
               visible={this.state.modalVisible}
-              animationType={'slide'}
+              animationType={'fade'}
               onRequestClose={() => this.closeModal()}
           >
             <View style={styless.modalContainer}>
@@ -59,7 +66,7 @@ export class Afterclick extends React.Component {
                icon="check-circle"
                onPress={ ()=>this.openModal()}
              />
-             {/* { this.state.show && <FullForm /> } */}
+              { this.state.show && <FullForm /> } 
             <FAB
                style={style.cancel}
                
@@ -67,6 +74,7 @@ export class Afterclick extends React.Component {
              
                onPress={ this.toggle }
              />
+             { this.state.show && <FullForm /> } 
             <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
             <Icon name="target" style={style.target} size={50} color="#000000" />
    
@@ -82,9 +90,11 @@ const styless = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'grey',
+    backgroundColor: 'green',
   },
   innerContainer: {
+    flex: 0.5,
     alignItems: 'center',
+    backgroundColor:'blue'
   },
 });
