@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Dimensions, Alert, Text, Image } from 'react-native';
+import { AppRegistry, StyleSheet, View, Dimensions, Alert, Text, Image,Modal,Button } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import RetroMapStyles from '../MapStyles/RetroMapStyles.json';
 import { FAB } from 'react-native-paper';
 import styles from '../styles/ViewMap.styles';
-import { Afterclick } from "../components/Afterclick";
+
+
+import {Afterclick} from '../components/Afterclick'
+
 
 
 let { width, height } = Dimensions.get('window');
@@ -25,9 +28,11 @@ export class ViewMap extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
       show: false,
+     
     };
     this.toggleDiv = this.toggleDiv.bind(this)
     this.autolocate = this.autolocate.bind(this)
+    this.switchMapType=this.switchMapType.bind(this)
 
   }
   autolocate = () => {
@@ -70,7 +75,10 @@ export class ViewMap extends React.Component {
     Alert.alert("Button Clicked")
 
   }
-
+  switchMapType = () => {
+    console.log('changing');
+    this.setState({ mapType: this.state.mapType === 'satellite' ? 'standard' : 'satellite' });
+  }
 
   render() {
     return (
@@ -79,18 +87,20 @@ export class ViewMap extends React.Component {
           
           style={styles.container}
           customMapStyle={RetroMapStyles}
+          // mapType={"hybrid"}
+          showsCompass={false}
           showsUserLocation={true}
           region={this.state.region}
           zoomEnabled={true}
           showsBuildings={true}
           showsTraffic={true}
           showsIndoors={true}
-          showsMyLocationButton={true}
+          // showsMyLocationButton={true}
 
           onRegionChangeComplete={region => this.setState({ region })}
           ref={ref=>this.map=ref}
         >
-
+        
 
          {/* { <MapView.Marker
             coordinate={ this.state.region }
@@ -163,7 +173,4 @@ export class ViewMap extends React.Component {
 }
 
 
-
-
-
-
+ 

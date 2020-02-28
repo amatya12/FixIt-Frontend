@@ -4,10 +4,11 @@ import { View,StyleSheet,Modal,Text,Button } from 'react-native';
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/FontAwesome5";
-
+import ReviewForm from '../screens/reviewForm';
 import { FAB } from 'react-native-paper';
 import {FullForm} from "../components/FullForm";
 import style from '../styles/AfterClick.styles';
+import {ViewMap} from "../components/ViewMap";
   
 export class Afterclick extends React.Component {
     constructor() {
@@ -49,32 +50,25 @@ export class Afterclick extends React.Component {
               animationType={'fade'}
               onRequestClose={() => this.closeModal()}
           >
-            <View style={styless.modalContainer}>
-              <View style={styless.innerContainer}>
-                <Text>This is content inside of modal component</Text>
-                <Button
-                    onPress={() => this.closeModal()}
-                    title="Close modal"
-                >
-                </Button>
-              </View>
-            </View>
+            <ReviewForm />
+            
           </Modal>
             <FAB
                style={style.ok}
-               
+               label="OK"
                icon="check-circle"
                onPress={ ()=>this.openModal()}
              />
-              { this.state.show && <FullForm /> } 
+              {/* { this.state.show && <FullForm /> }  */}
             <FAB
                style={style.cancel}
                
                icon="alpha-x-circle"
+               label="Cancel"
              
                onPress={ this.toggle }
              />
-             { this.state.show && <FullForm /> } 
+             { this.state.show} 
             <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
             <Icon name="target" style={style.target} size={50} color="#000000" />
    

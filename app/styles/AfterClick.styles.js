@@ -19,7 +19,7 @@ export default StyleSheet.create({
     ok: {
         position: 'absolute',
         margin:16,
-        right: 100,
+        right: 75,
         bottom: 125,
         backgroundColor:'#F0E9E7'
         
@@ -27,7 +27,7 @@ export default StyleSheet.create({
       cancel: {
         position: 'absolute',
         margin:16,
-        right: 250,
+        right: 200,
         bottom: 125,
         backgroundColor:'#EBCA10'
         
