@@ -101,8 +101,8 @@ export class ViewMap extends React.Component {
           showsTraffic={true}
           showsIndoors={true}
           //showsMyLocationButton={true}
+
           onRegionChangeComplete={region => this.setState({ region })}
-          ref={ref => (this.map = ref)}
         >
           {/* {
             <MapView.Marker

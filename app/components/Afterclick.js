@@ -9,16 +9,13 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import IconFont from "react-native-vector-icons/FontAwesome";
 import { globalStyles } from "../styles/global.styles";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/FontAwesome5";
-import ReviewForm from "../screens/reviewForm";
 import { FAB } from "react-native-paper";
-import { FullForm } from "../components/FullForm";
 import style from "../styles/AfterClick.styles";
-import { ViewMap } from "../components/ViewMap";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import { Dropdown } from "react-native-material-dropdown";
 const items = [
   {
     name: "Signs and Lights",
@@ -139,6 +136,17 @@ export class Afterclick extends React.Component {
   }
 
   render() {
+    let data = [
+      {
+        value: "High"
+      },
+      {
+        value: "Medium"
+      },
+      {
+        value: "Low"
+      }
+    ];
     return (
       <View>
         <Modal
@@ -149,7 +157,7 @@ export class Afterclick extends React.Component {
         >
           <View
             style={{
-              margin: 20,
+              margin: 0,
               borderRadius: 20,
               borderWidth: 2,
               borderColor: "#ffb3b3",
@@ -161,23 +169,39 @@ export class Afterclick extends React.Component {
               style={globalStyles.input}
               placeholder="Issues"
             />
-            <SectionedMultiSelect
-              style={globalStyles.input}
-              items={items}
-              uniqueKey="id"
-              subKey="children"
-              selectText="Click here to choose categories."
-              showDropDowns={true}
-              readOnlyHeadings={true}
-              onSelectedItemsChange={this.onSelectedItemsChange}
-              selectedItems={this.state.selectedItems}
-            />
+            <View
+              style={{
+                margin: 10,
+                paddingLeft: 15,
+                borderWidth: 1,
+                borderColor: "#ddd",
+                borderRadius: 6
+              }}
+            >
+              <SectionedMultiSelect
+                style={globalStyles.input}
+                items={items}
+                uniqueKey="id"
+                subKey="children"
+                selectText="Click here to choose categories."
+                showDropDowns={true}
+                readOnlyHeadings={true}
+                onSelectedItemsChange={this.onSelectedItemsChange}
+                selectedItems={this.state.selectedItems}
+              />
+            </View>
 
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Priority"
-              keyboardType="numeric"
-            />
+            <View
+              style={{
+                margin: 10,
+                paddingLeft: 15,
+                borderWidth: 1,
+                borderColor: "#ddd",
+                borderRadius: 6
+              }}
+            >
+              <Dropdown label="Priority" data={data} />
+            </View>
             <TextInput
               style={globalStyles.input}
               multiline
@@ -193,8 +217,9 @@ export class Afterclick extends React.Component {
               style={{
                 width: "90%",
                 margin: 10,
-                borderWidth: 3,
-                borderColor: "grey"
+                borderWidth: 2,
+                borderColor: "black",
+                borderRadius: 2
               }}
             >
               <Text style={globalStyles.input}>
@@ -210,13 +235,7 @@ export class Afterclick extends React.Component {
                 flexDirection: "row"
               }}
             >
-              <View
-                style={{
-                  flex: 1,
-                  marginRight: 10,
-                  borderRadius: 20
-                }}
-              >
+              <View style={{ flex: 1, marginRight: 10 }}>
                 <Button
                   onPress={() => this.closeModal()}
                   title="Cancel"
