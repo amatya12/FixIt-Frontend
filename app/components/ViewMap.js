@@ -1,16 +1,22 @@
-import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Dimensions, Alert, Text, Image,Modal,Button } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import RetroMapStyles from '../MapStyles/RetroMapStyles.json';
-import { FAB } from 'react-native-paper';
-import styles from '../styles/ViewMap.styles';
+import React, { Component } from "react";
+import {
+  AppRegistry,
+  StyleSheet,
+  View,
+  Dimensions,
+  Alert,
+  Text,
+  TouchableOpacity
+} from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import RetroMapStyles from "../MapStyles/RetroMapStyles.json";
+import { FAB } from "react-native-paper";
+import styles from "../styles/ViewMap.styles";
 
-
-import {Afterclick} from '../components/Afterclick'
-
-
-
-let { width, height } = Dimensions.get('window');
+import { Afterclick } from "../components/Afterclick";
+import Geocoder from "react-native-geocoding";
+import { TouchableOpacityBase } from "react-native";
+let { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE = 30.5123;
 const LONGITUDE = -90.470122;
@@ -25,66 +31,64 @@ export class ViewMap extends React.Component {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
       },
-      show: false,
-     
+      show: false
     };
-    this.toggleDiv = this.toggleDiv.bind(this)
-    this.autolocate = this.autolocate.bind(this)
-    this.switchMapType=this.switchMapType.bind(this)
-
+    this.toggleDiv = this.toggleDiv.bind(this);
+    this.autolocate = this.autolocate.bind(this);
+    this.switchMapType = this.switchMapType.bind(this);
   }
   autolocate = () => {
-   this.map.animateToRegion(
-     {
-       ... this.state.region,
-       latitude:30.5123,
-       longitude:-90.470122
-     }
-   )
-
-  }
-  picklocationHandler=(event)=>{
+    this.map.animateToRegion({
+      ...this.state.region,
+      latitude: 30.5123,
+      longitude: -90.470122
+    });
+  };
+  picklocationHandler = event => {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.map.animateToRegion(
-          {
-            ... this.state.region,
-            latitude:position.coords.latitude,
-            longitude:position.coords.longitude
-          }
-        )
+        this.map.animateToRegion({
+          ...this.state.region,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
       },
-      (error) => console.log(error.message),
-      { enableHighAccuracy: true, maximumAge: 1000 },
+      error => console.log(error.message),
+      { enableHighAccuracy: true, maximumAge: 1000 }
     );
-  }
- 
+  };
 
   toggleDiv = () => {
     const { show } = this.state;
 
-    this.setState({ show: !show })
-
-  }
-
+    this.setState({ show: !show });
+  };
 
   ButtonClickCheckFunction = () => {
-
-    Alert.alert("Button Clicked")
-
-  }
+    Alert.alert("Button Clicked");
+  };
   switchMapType = () => {
-    console.log('changing');
-    this.setState({ mapType: this.state.mapType === 'satellite' ? 'standard' : 'satellite' });
+    console.log("changing");
+    this.setState({
+      mapType: this.state.mapType === "satellite" ? "standard" : "satellite"
+    });
+  };
+  getData() {
+    Geocoder.init("AIzaSyD2oeLhrKSTPxTcelFnbI7jbo5X-k7G3rA");
+    Geocoder.from(41.89, 12.49)
+      .then(json => {
+        var addressComponent = json.results[0].address_components[0];
+        console.log(addressComponent);
+      })
+      .catch(error => console.warn(error));
   }
 
   render() {
     return (
       <View style={styles.map}>
         <MapView
-          
           style={styles.container}
           customMapStyle={RetroMapStyles}
           // mapType={"hybrid"}
@@ -98,45 +102,50 @@ export class ViewMap extends React.Component {
           // showsMyLocationButton={true}
 
           onRegionChangeComplete={region => this.setState({ region })}
-          ref={ref=>this.map=ref}
+          ref={ref => (this.map = ref)}
         >
-        
-
-         {/* { <MapView.Marker
-            coordinate={ this.state.region }
-            onDragEnd={(e) => this.setState({ region: e.nativeEvent.coordinate })}
-        /> }  */}
+          {/* {
+            <MapView.Marker
+              coordinate={this.state.region}
+              onDragEnd={e =>
+                this.setState({ region: e.nativeEvent.coordinate })
+              }
+            />
+          } */}
         </MapView>
 
         <FAB
           style={styles.gps}
-
           icon="map-marker-plus"
           onPress={this.toggleDiv}
         />
         <FAB
           style={styles.compass}
-
           icon="crosshairs-gps"
           onPress={this.picklocationHandler}
         />
 
-
-
-        {this.state.show && <Afterclick />}
-
-
-
+        {this.state.show && (
+          <Afterclick
+            dataFromParent={this.state.region.latitude}
+            dataFromP={this.state.region.longitude}
+          />
+        )}
 
         <View style={styles.latlong}>
           <Text>Latitude:: {this.state.region.latitude}</Text>
           <Text>Longitude:: {this.state.region.longitude}</Text>
+          {/* <TouchableOpacity
+            onPress={() => {
+              this.getData();
+            }}
+          >
+            <Text>Address</Text>
+          </TouchableOpacity> */}
+
           {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
         </View>
-
-
       </View>
-
     );
   }
   componentDidMount() {
@@ -147,30 +156,25 @@ export class ViewMap extends React.Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
           }
         });
       },
-      (error) => console.log(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      error => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    this.watchID = navigator.geolocation.watchPosition(
-      position => {
-        this.setState({
-          region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }
-        });
-      }
-    );
+    this.watchID = navigator.geolocation.watchPosition(position => {
+      this.setState({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        }
+      });
+    });
   }
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
 }
-
-
- 

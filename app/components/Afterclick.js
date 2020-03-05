@@ -1,94 +1,214 @@
-import React, { Component } from 'react';
-import { View,StyleSheet,Modal,Text,Button } from 'react-native';
-
-
+import React, { Component } from "react";
+import {
+  View,
+  StyleSheet,
+  Modal,
+  Text,
+  TextInput,
+  Button,
+  Dimensions
+} from "react-native";
+import { globalStyles } from "../styles/global.styles";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/FontAwesome5";
-import ReviewForm from '../screens/reviewForm';
-import { FAB } from 'react-native-paper';
-import {FullForm} from "../components/FullForm";
-import style from '../styles/AfterClick.styles';
-import {ViewMap} from "../components/ViewMap";
-  
-export class Afterclick extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-         
-          show : false,
-          modalVisible: false,
-          
-            };
-        this.toggle = this.toggle.bind(this)
-           this._onPressAdd = this._onPressAdd.bind(this);    
-        
+import ReviewForm from "../screens/reviewForm";
+import { FAB } from "react-native-paper";
+import { FullForm } from "../components/FullForm";
+import style from "../styles/AfterClick.styles";
+import { ViewMap } from "../components/ViewMap";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
+const items = [
+  {
+    name: "Signs and Lights",
+    id: 0,
+    children: [
+      {
+        name: "stop signs",
+        id: 10
+      },
+      {
+        name: "Street signs",
+        id: 17
+      },
+      {
+        name: "one way",
+        id: 13
+      },
+      {
+        name: "DOnot enter",
+        id: 14
+      },
+      {
+        name: "Stop Lights",
+        id: 15
+      },
+      {
+        name: "Speed Limits",
+        id: 16
       }
-      openModal() {
-        this.setState({modalVisible:true});
+    ]
+  },
+  {
+    name: "Roads",
+    id: 1,
+    children: [
+      {
+        name: "potholes",
+        id: 20
+      },
+      {
+        name: "Debris",
+        id: 21
+      },
+      {
+        name: "Paints",
+        id: 22
+      },
+      {
+        name: "cracking",
+        id: 23
+      },
+      {
+        name: "washout",
+        id: 24
+      },
+      {
+        name: "street lights",
+        id: 25
+      },
+      {
+        name: "other",
+        id: 26
       }
-     
-    
-      closeModal() {
-        this.setState({modalVisible:false});
+    ]
+  },
+  {
+    name: "Roadside",
+    id: 2,
+    children: [
+      {
+        name: "Drainage",
+        id: 30
+      },
+      {
+        name: "grass cutting",
+        id: 31
+      },
+      {
+        name: "overgrowth",
+        id: 32
+      },
+      {
+        name: "other",
+        id: 33
       }
-       
-      toggle = () => {
-        const { show } = this.state;
-        this.setState( { show : !show } )
-    }
-    _onPressAdd () {
-      // alert("You add Item");
-      this.refs.addModal.showAddModal();
+    ]
   }
-    
-    render() {
-        return (
-            <View>
-              <Modal
-              style={styless.container}
-              visible={this.state.modalVisible}
-              animationType={'fade'}
-              onRequestClose={() => this.closeModal()}
-          >
-            <ReviewForm />
-            
-          </Modal>
-            <FAB
-               style={style.ok}
-               label="OK"
-               icon="check-circle"
-               onPress={ ()=>this.openModal()}
-             />
-              {/* { this.state.show && <FullForm /> }  */}
-            <FAB
-               style={style.cancel}
-               
-               icon="alpha-x-circle"
-               label="Cancel"
-             
-               onPress={ this.toggle }
-             />
-             { this.state.show} 
-            <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
-            <Icon name="target" style={style.target} size={50} color="#000000" />
-   
-         </View>
-        );
-    }
+];
+export class Afterclick extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      show: false,
+      modalVisible: false,
+      selectedItems: []
+    };
+    this.toggle = this.toggle.bind(this);
+    this._onPressAdd = this._onPressAdd.bind(this);
+  }
+  openModal() {
+    this.setState({ modalVisible: true });
+  }
+  onSelectedItemsChange = selectedItems => {
+    this.setState({ selectedItems });
+  };
+
+  closeModal() {
+    this.setState({ modalVisible: false });
+  }
+
+  toggle = () => {
+    const { show } = this.state;
+    this.setState({ show: !show });
+  };
+  _onPressAdd() {
+    // alert("You add Item");
+    this.refs.addModal.showAddModal();
+  }
+
+  render() {
+    return (
+      <View>
+        <Modal
+          visible={this.state.modalVisible}
+          animationType={"fade"}
+          onRequestClose={() => this.closeModal()}
+        >
+          <TextInput
+            numberOfLines={4}
+            style={globalStyles.input}
+            placeholder="Issues"
+          />
+          <SectionedMultiSelect
+            style={globalStyles.input}
+            items={items}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Click here to choose categories."
+            showDropDowns={true}
+            readOnlyHeadings={true}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={this.state.selectedItems}
+          />
+
+          <TextInput
+            style={globalStyles.input}
+            multiline
+            placeholder="Categories"
+          />
+
+          <TextInput
+            style={globalStyles.input}
+            placeholder="Priority"
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={globalStyles.input}
+            multiline
+            placeholder="Location"
+          />
+          <TextInput
+            style={globalStyles.input}
+            multiline
+            placeholder="ImagePicker"
+          />
+
+          <Text style={globalStyles.input}>{this.props.dataFromParent}</Text>
+          <Text style={globalStyles.input}>{this.props.dataFromP}</Text>
+          <Button
+            color="maroon"
+            title="Submit"
+            onPress={() => this.closeModal()}
+          />
+        </Modal>
+        <FAB
+          style={style.ok}
+          label="OK"
+          icon="check-circle"
+          onPress={() => this.openModal()}
+        />
+        {/* { this.state.show && <FullForm /> }  */}
+        <FAB
+          style={style.cancel}
+          icon="alpha-x-circle"
+          label="Cancel"
+          onPress={this.toggle}
+        />
+        {this.state.show}
+
+        <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
+        <Icon name="target" style={style.target} size={50} color="#000000" />
+      </View>
+    );
+  }
 }
-const styless = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'green',
-  },
-  innerContainer: {
-    flex: 0.5,
-    alignItems: 'center',
-    backgroundColor:'blue'
-  },
-});
