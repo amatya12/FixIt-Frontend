@@ -89,18 +89,18 @@ export class ViewMap extends React.Component {
     return (
       <View style={styles.map}>
         <MapView
+          // ref={map => (this.map = map)}
           style={styles.container}
           customMapStyle={RetroMapStyles}
           // mapType={"hybrid"}
-          showsCompass={false}
+
           showsUserLocation={true}
           region={this.state.region}
           zoomEnabled={true}
           showsBuildings={true}
           showsTraffic={true}
           showsIndoors={true}
-          // showsMyLocationButton={true}
-
+          //showsMyLocationButton={true}
           onRegionChangeComplete={region => this.setState({ region })}
           ref={ref => (this.map = ref)}
         >

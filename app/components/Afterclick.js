@@ -6,8 +6,10 @@ import {
   Text,
   TextInput,
   Button,
+  TouchableOpacity,
   Dimensions
 } from "react-native";
+import IconFont from "react-native-vector-icons/FontAwesome";
 import { globalStyles } from "../styles/global.styles";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/FontAwesome5";
@@ -140,71 +142,109 @@ export class Afterclick extends React.Component {
     return (
       <View>
         <Modal
+          animationType="slide"
+          transparent={true}
           visible={this.state.modalVisible}
-          animationType={"fade"}
           onRequestClose={() => this.closeModal()}
         >
-          <TextInput
-            numberOfLines={4}
-            style={globalStyles.input}
-            placeholder="Issues"
-          />
-          <SectionedMultiSelect
-            style={globalStyles.input}
-            items={items}
-            uniqueKey="id"
-            subKey="children"
-            selectText="Click here to choose categories."
-            showDropDowns={true}
-            readOnlyHeadings={true}
-            onSelectedItemsChange={this.onSelectedItemsChange}
-            selectedItems={this.state.selectedItems}
-          />
+          <View
+            style={{
+              margin: 20,
+              borderRadius: 20,
+              borderWidth: 2,
+              borderColor: "#ffb3b3",
+              backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
+            }}
+          >
+            <TextInput
+              numberOfLines={1}
+              style={globalStyles.input}
+              placeholder="Issues"
+            />
+            <SectionedMultiSelect
+              style={globalStyles.input}
+              items={items}
+              uniqueKey="id"
+              subKey="children"
+              selectText="Click here to choose categories."
+              showDropDowns={true}
+              readOnlyHeadings={true}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              selectedItems={this.state.selectedItems}
+            />
 
-          <TextInput
-            style={globalStyles.input}
-            multiline
-            placeholder="Categories"
-          />
+            <TextInput
+              style={globalStyles.input}
+              placeholder="Priority"
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={globalStyles.input}
+              multiline
+              placeholder="Location"
+            />
+            <TextInput
+              style={globalStyles.input}
+              multiline
+              placeholder="ImagePicker"
+            />
+            <Text style={{ marginLeft: 20, fontSize: 20 }}>GPS Coordinate</Text>
+            <View
+              style={{
+                width: "90%",
+                margin: 10,
+                borderWidth: 3,
+                borderColor: "grey"
+              }}
+            >
+              <Text style={globalStyles.input}>
+                {this.props.dataFromParent}
+              </Text>
+              <Text style={globalStyles.input}>{this.props.dataFromP}</Text>
+            </View>
+            <View
+              style={{
+                width: "90%",
+                margin: 10,
 
-          <TextInput
-            style={globalStyles.input}
-            placeholder="Priority"
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={globalStyles.input}
-            multiline
-            placeholder="Location"
-          />
-          <TextInput
-            style={globalStyles.input}
-            multiline
-            placeholder="ImagePicker"
-          />
+                flexDirection: "row"
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  marginRight: 10,
+                  borderRadius: 20
+                }}
+              >
+                <Button
+                  onPress={() => this.closeModal()}
+                  title="Cancel"
+                  borderRadius="10"
+                  color="red"
+                />
+              </View>
 
-          <Text style={globalStyles.input}>{this.props.dataFromParent}</Text>
-          <Text style={globalStyles.input}>{this.props.dataFromP}</Text>
-          <Button
-            color="maroon"
-            title="Submit"
-            onPress={() => this.closeModal()}
-          />
+              <View style={{ flex: 1, marginRight: 10 }}>
+                <Button title="Submit" color="green" borderRadius="10" />
+              </View>
+            </View>
+          </View>
         </Modal>
+
         <FAB
           style={style.ok}
           label="OK"
           icon="check-circle"
           onPress={() => this.openModal()}
         />
-        {/* { this.state.show && <FullForm /> }  */}
+
         <FAB
           style={style.cancel}
           icon="alpha-x-circle"
           label="Cancel"
           onPress={this.toggle}
         />
-        {this.state.show}
 
         <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
         <Icon name="target" style={style.target} size={50} color="#000000" />
