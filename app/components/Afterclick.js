@@ -159,8 +159,12 @@ export class Afterclick extends React.Component {
         >
           <View
             style={{
+<<<<<<< Updated upstream
 
               borderRadius: 8,
+=======
+              borderRadius: 20,
+>>>>>>> Stashed changes
               borderWidth: 2,
               borderColor: "#ffb3b3",
               backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
