@@ -105,6 +105,7 @@ const items = [
   }
 ];
 export class Afterclick extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -148,6 +149,7 @@ export class Afterclick extends React.Component {
       }
     ];
     return (
+
       <View>
         <Modal
           animationType="slide"
@@ -157,8 +159,8 @@ export class Afterclick extends React.Component {
         >
           <View
             style={{
-              margin: 0,
-              borderRadius: 20,
+
+              borderRadius: 8,
               borderWidth: 2,
               borderColor: "#ffb3b3",
               backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
@@ -171,7 +173,7 @@ export class Afterclick extends React.Component {
             />
             <View
               style={{
-                margin: 10,
+                margin: 40,
                 paddingLeft: 15,
                 borderWidth: 1,
                 borderColor: "#ddd",
