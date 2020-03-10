@@ -30,6 +30,7 @@ export default function ReviewForm({ addReview }) {
               onChangeText={props.handleChange("Issues")}
               value={props.values.Issues}
             />
+            
 
             <TextInput
               style={globalStyles.input}
