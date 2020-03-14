@@ -29,7 +29,7 @@ export default StyleSheet.create({
     position: "absolute",
     margin: 16,
     right: 16,
-
+   
     bottom: 650,
     backgroundColor: "#ffffff"
   },

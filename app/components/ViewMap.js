@@ -36,14 +36,15 @@ export class ViewMap extends React.Component {
       show: false
     };
     this.toggleDiv = this.toggleDiv.bind(this);
+    this.hide_overlay = this.hide_overlay.bind(this);
     this.autolocate = this.autolocate.bind(this);
     this.switchMapType = this.switchMapType.bind(this);
   }
-  autolocate = () => {
+  autolocate = position => {
     this.map.animateToRegion({
       ...this.state.region,
-      latitude: 30.5123,
-      longitude: -90.470122
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
     });
   };
   picklocationHandler = event => {
@@ -61,10 +62,11 @@ export class ViewMap extends React.Component {
   };
 
   toggleDiv = () => {
-    const { show } = this.state;
-
-    this.setState({ show: !show });
+    this.setState({ show: true });
   };
+  hide_overlay() {
+    this.setState({ show: false });
+  }
 
   ButtonClickCheckFunction = () => {
     Alert.alert("Button Clicked");
@@ -75,21 +77,12 @@ export class ViewMap extends React.Component {
       mapType: this.state.mapType === "satellite" ? "standard" : "satellite"
     });
   };
-  getData() {
-    Geocoder.init("AIzaSyD2oeLhrKSTPxTcelFnbI7jbo5X-k7G3rA");
-    Geocoder.from(41.89, 12.49)
-      .then(json => {
-        var addressComponent = json.results[0].address_components[0];
-        console.log(addressComponent);
-      })
-      .catch(error => console.warn(error));
-  }
 
   render() {
     return (
       <View style={styles.map}>
         <MapView
-          // ref={map => (this.map = map)}
+          ref={map => (this.map = map)}
           style={styles.container}
           customMapStyle={RetroMapStyles}
           // mapType={"hybrid"}
@@ -129,6 +122,7 @@ export class ViewMap extends React.Component {
           <Afterclick
             dataFromParent={this.state.region.latitude}
             dataFromP={this.state.region.longitude}
+            hideOverlay={this.hide_overlay}
           />
         )}
 
