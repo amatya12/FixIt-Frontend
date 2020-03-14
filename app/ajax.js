@@ -1,19 +1,22 @@
+import axios from 'axios';
 
-
-
-const apiHost = "https://bakesaleforgood.com"
 export default {
-    async fetchInitialDepartments() {
-        try {
-            let response = await fetch('http://192.168.1.249:45455/api/category');
-            //let response = await fetch('https://localhost:44358/api/category');
-            console.log(response);
-            let responseJson = await response.json();
-            console.log(responseJson);
-            return responseJson;
-        }
-        catch (error) {
-            console.error(error);
-        }
+    fetchInitialDepartments() {
+        console.log('*************');
+
+        // axios.get('http://192.168.1.249:45455/api/category').then(res => console.log("The response is ", res))
+        //     .catch((error) => { http://192.168.1.249:5001/api/category
+        //         // handle error
+        //         console.log("Error is ", error);
+        //     })
+
+        axios.get('http://192.168.1.249:5001/api/category').then(res => console.log(res.data))
+            .catch((error) => {
+                // handle error
+                console.log("Error is ", error);
+            });
+
+
+
     }
 }
