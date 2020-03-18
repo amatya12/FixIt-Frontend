@@ -32,5 +32,34 @@ export const globalStyles = StyleSheet.create({
     flexDirection: "row",
 
     backgroundColor: "#fff"
+  },
+  formView: {
+    margin: 10,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "black",
+    backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
+  },
+  formelement: {
+    margin: 10,
+    paddingLeft: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 6
+  },
+  gpscord: {
+    width: "90%",
+    margin: 10,
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 2
+  },
+  scroll: {
+    margin: 20
+  },
+  buttonSection: {
+    width: "90%",
+    margin: 10,
+    flexDirection: "row"
   }
 });

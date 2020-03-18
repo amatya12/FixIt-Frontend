@@ -14,6 +14,7 @@ import { FAB } from "react-native-paper";
 import styles from "../styles/ViewMap.styles";
 
 import { Afterclick } from "../components/Afterclick";
+
 import Geocoder from "react-native-geocoding";
 import { TouchableOpacityBase } from "react-native";
 let { width, height } = Dimensions.get("window");
@@ -86,7 +87,7 @@ export class ViewMap extends React.Component {
           style={styles.container}
           customMapStyle={RetroMapStyles}
           // mapType={"hybrid"}
-
+          showsCompass={false}
           showsUserLocation={true}
           region={this.state.region}
           zoomEnabled={true}
