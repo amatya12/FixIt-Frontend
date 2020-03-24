@@ -20,7 +20,8 @@ export const globalStyles = StyleSheet.create({
     padding: 20,
     margin: 10,
     fontSize: 18,
-    borderRadius: 6
+    borderRadius: 6,
+    textAlignVertical: "top"
   },
   searchSection: {
     borderWidth: 1,
@@ -48,9 +49,9 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 6
   },
   gpscord: {
-    width: "90%",
-    margin: 10,
-    borderWidth: 2,
+    width: "80%",
+    margin: 20,
+
     borderColor: "black",
     borderRadius: 2
   },

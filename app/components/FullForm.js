@@ -11,7 +11,7 @@ import {
   Dimensions,
   ScrollView
 } from "react-native";
-
+import axios from "axios";
 import { Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -28,114 +28,157 @@ import { ViewMap } from "../components/ViewMap";
 const items = [
   {
     name: "Signs and Lights",
-    id: 0,
+    id: 1,
     children: [
       {
         name: "stop signs",
-        id: 10
+        id: 1
       },
       {
         name: "Street signs",
-        id: 17
+        id: 2
       },
       {
         name: "one way",
-        id: 13
+        id: 3
       },
       {
-        name: "DOnot enter",
-        id: 14
+        name: "DO not enter",
+        id: 4
       },
       {
         name: "Stop Lights",
-        id: 15
+        id: 5
       },
       {
         name: "Speed Limits",
-        id: 16
+        id: 6
+      },
+      {
+        name: "Crossing Signs",
+        id: 7
+      },
+      {
+        name: "U Turn",
+        id: 8
+      },
+      {
+        name: "Warning Signs",
+        id: 9
       }
     ]
   },
   {
     name: "Roads",
-    id: 1,
+    id: 4,
     children: [
       {
         name: "potholes",
-        id: 20
+        id: 11
       },
       {
         name: "Debris",
-        id: 21
+        id: 12
       },
       {
         name: "Paints",
-        id: 22
+        id: 13
       },
       {
         name: "cracking",
-        id: 23
+        id: 14
       },
       {
         name: "washout",
-        id: 24
+        id: 15
       },
       {
         name: "street lights",
-        id: 25
+        id: 16
       },
       {
         name: "other",
-        id: 26
+        id: 17
       }
     ]
   },
   {
     name: "Roadside",
-    id: 2,
+    id: 5,
     children: [
       {
         name: "Drainage",
-        id: 30
+        id: 18
       },
       {
         name: "grass cutting",
-        id: 31
+        id: 19
       },
       {
         name: "overgrowth",
-        id: 32
+        id: 20
       },
       {
         name: "other",
-        id: 33
+        id: 21
       }
     ]
   }
 ];
 export class FullForm extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      priority: "",
-      selectedItems: [],
+      imagebase64: null,
       image: null,
-      Issue: "",
-      Location: ""
+      issues: "",
+      location: "",
+      subCategoryId: [],
+      imageUrl: "",
+      location: "",
+      latitude: this.props.lat,
+      longitude: this.props.long,
+      priority: ""
     };
     this.submit = this.submit.bind(this);
+    this.postInitialIssue = this.postInitialIssue.bind(this);
   }
 
-  onSelectedItemsChange = selectedItems => {
-    this.setState({ selectedItems });
-    console.log(selectedItems);
+  postInitialIssue() {
+    axios
+      .post("http://192.168.1.25:5001/api/issue", {
+        issues: this.state.issues,
+        subCategoryId: this.state.subCategoryId,
+        imageUrl: this.state.imagebase64,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        priority: this.state.priority
+      })
+      .then(response => {
+        console.log(response.data);
+        console.log(response.status);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    // axios.get("https://api.github.com/users/mapbox").then(response => {
+    //   console.log(response.data);
+    //   console.log(response.status);
+    // });
+    alert(" posted succesfully");
+    this.props.modelclosed();
+  }
+
+  onSelectedItemsChange = subCategoryId => {
+    this.setState({ subCategoryId });
+    console.log(subCategoryId);
   };
-  onSelectedItemObjectsChange = selectedItems => {
-    console.log(selectedItems); // should display [{id: '92iijs7yta', name: 'Ondo'}, ...]
+  onSelectedItemObjectsChange = subCategoryId => {
+    console.log(subCategoryId); // should display [{id: '92iijs7yta', name: 'Ondo'}, ...]
   };
   componentDidMount() {
     this.getPermissionAsync();
-    console.log("hi");
   }
 
   getPermissionAsync = async () => {
@@ -152,56 +195,60 @@ export class FullForm extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
+      base64: true
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      const base64ImageUri = result
+        ? `data:image/jpg;base64,${result.base64}`
+        : null;
+
+      this.setState({ imagebase64: base64ImageUri });
     }
   };
-  submit(Issue, Location, latitude, longitude, priority, selectedItems) {
+  submit(
+    issues,
+    location,
+    latitude,
+    longitude,
+    priority,
+    subCategoryId,
+    image
+  ) {
     alert(
       "Issue: " +
-        Issue +
+        issues +
         " Location: " +
-        Location +
+        location +
         " latitude: " +
         latitude +
         " longitude: " +
         longitude +
         "priority:" +
         priority +
-        "selected items:" +
-        selectedItems
+        "subcategoryID:" +
+        subCategoryId +
+        "image:" +
+        image
     );
-    console.log("wow");
   }
 
   render() {
-    console.log(this.props);
-    let data = [
-      {
-        value: "High"
-      },
-      {
-        value: "Medium"
-      },
-      {
-        value: "Low"
-      }
-    ];
     let { image } = this.state;
     return (
       <View style={globalStyles.formView}>
         <ScrollView style={globalStyles.scroll}>
           <TextInput
-            numberOfLines={1}
+            multilines={true}
+            numberOfLines={5}
             style={globalStyles.input}
             placeholder="Issues"
-            onChangeText={text => this.setState({ Issue: text })}
-            value={this.state.Issue}
+            blurOnSubmit={false}
+            enablesReturnKeyAutomatically={true}
+            onChangeText={text => this.setState({ issues: text })}
+            value={this.state.issues}
           />
 
           <View style={globalStyles.formelement}>
@@ -214,7 +261,7 @@ export class FullForm extends React.Component {
               readOnlyHeadings={true}
               onSelectedItemsChange={this.onSelectedItemsChange}
               // onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
-              selectedItems={this.state.selectedItems}
+              selectedItems={this.state.subCategoryId}
             />
           </View>
 
@@ -226,7 +273,7 @@ export class FullForm extends React.Component {
                 this.setState({ priority: itemValue })
               }
             >
-              <Picker.Item label="High" value="High" />
+              <Picker.Item label="High" value="high" />
               <Picker.Item label="medium" value="medium" />
               <Picker.Item label="low" value="low" />
             </Picker>
@@ -236,8 +283,8 @@ export class FullForm extends React.Component {
             style={globalStyles.input}
             multiline
             placeholder="Location"
-            onChangeText={text => this.setState({ Location: text })}
-            value={this.state.Location}
+            onChangeText={text => this.setState({ location: text })}
+            value={this.state.location}
           />
 
           <View style={globalStyles.searchSection}>
@@ -254,13 +301,16 @@ export class FullForm extends React.Component {
               placeholder="Pick images"
               underlineColorAndroid="transparent"
               editable={false}
+              value={this.state.image}
             />
           </View>
 
           {image && (
             <TouchableOpacity>
               <Image
-                source={{ uri: image }}
+                source={{
+                  uri: image
+                }}
                 style={{ margin: 20, width: 300, height: 200 }}
               />
             </TouchableOpacity>
@@ -269,12 +319,18 @@ export class FullForm extends React.Component {
           <Text style={{ marginLeft: 20, fontSize: 20 }}>GPS Coordinate</Text>
 
           <View style={globalStyles.gpscord}>
-            <Text value={this.props.lat} style={globalStyles.input}>
-              {this.props.lat}
-            </Text>
-            <Text value={this.props.long} style={globalStyles.input}>
-              {this.props.long}
-            </Text>
+            <View style={{ flex: 1, flexDirection: "column" }}>
+              <Text style={{ left: 10 }}>Latitude</Text>
+              <Text value={this.state.latitude} style={globalStyles.input}>
+                {this.state.latitude}
+              </Text>
+            </View>
+            <View style={{ flex: 1, flexDirection: "column" }}>
+              <Text style={{ left: 10 }}>Longitude</Text>
+              <Text value={this.state.longitude} style={globalStyles.input}>
+                {this.state.longitude}
+              </Text>
+            </View>
           </View>
 
           <View style={globalStyles.buttonSection}>
@@ -292,16 +348,7 @@ export class FullForm extends React.Component {
                 title="Submit"
                 color="green"
                 borderRadius="10"
-                onPress={() =>
-                  this.submit(
-                    this.state.Issue,
-                    this.state.Location,
-                    this.props.lat,
-                    this.props.long,
-                    this.state.priority,
-                    this.state.selectedItems
-                  )
-                }
+                onPress={this.postInitialIssue}
               />
             </View>
           </View>

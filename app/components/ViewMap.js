@@ -6,20 +6,25 @@ import {
   Dimensions,
   Alert,
   Text,
-  TouchableOpacity
+  Animated,
+  Image,
+  TouchableOpacity,
+  Button
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import RetroMapStyles from "../MapStyles/RetroMapStyles.json";
-import { FAB } from "react-native-paper";
+import { FAB, Appbar } from "react-native-paper";
 import styles from "../styles/ViewMap.styles";
-
+import ActionButton from "react-native-action-button";
 import { Afterclick } from "../components/Afterclick";
+import Icon from "react-native-vector-icons/Ionicons";
 
-import Geocoder from "react-native-geocoding";
-import { TouchableOpacityBase } from "react-native";
+import ajax from "../ajax";
+
 let { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE = 30.5123;
+
 const LONGITUDE = -90.470122;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -28,18 +33,40 @@ export class ViewMap extends React.Component {
   constructor() {
     super();
     this.state = {
+      markers: [
+        // {
+        //   coordinate: {
+        //     latitude: 45.524548,
+        //     longitude: -122.6749817
+        //   }
+        // },
+        // {
+        //   coordinate: {
+        //     latitude: 45.524698,
+        //     longitude: -122.6655507
+        //   }
+        // }
+      ],
+
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
-      show: false
+      mapType: "standard",
+      show: false,
+      isloaded: true
     };
     this.toggleDiv = this.toggleDiv.bind(this);
     this.hide_overlay = this.hide_overlay.bind(this);
     this.autolocate = this.autolocate.bind(this);
     this.switchMapType = this.switchMapType.bind(this);
+    this.switchToSatellite = this.switchToSatellite.bind(this);
+
+    this.switchToStandard = this.switchToStandard.bind(this);
+    this.showmarker = this.showmarker.bind(this);
+    this.fetchCoordinate = this.fetchCoordinate.bind(this);
   }
   autolocate = position => {
     this.map.animateToRegion({
@@ -48,6 +75,7 @@ export class ViewMap extends React.Component {
       longitude: position.coords.longitude
     });
   };
+
   picklocationHandler = event => {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -63,8 +91,18 @@ export class ViewMap extends React.Component {
   };
 
   toggleDiv = () => {
-    this.setState({ show: true });
+    this.map.showsCompass = false;
+    const { show } = this.state;
+
+    this.setState({ show: !show });
   };
+  async showmarker() {
+    this.fetchCoordinate;
+
+    const { isloaded } = this.state;
+
+    this.setState({ isloaded: !isloaded });
+  }
   hide_overlay() {
     this.setState({ show: false });
   }
@@ -75,7 +113,24 @@ export class ViewMap extends React.Component {
   switchMapType = () => {
     console.log("changing");
     this.setState({
-      mapType: this.state.mapType === "satellite" ? "standard" : "satellite"
+      mapType: this.state.mapType === "standard" ? "satellite" : "standard"
+    });
+  };
+  switchToSatellite = () => {
+    console.log("changing");
+    this.setState({
+      mapType: "satellite"
+    });
+  };
+  async fetchCoordinate() {
+    const damages = await ajax.fetchDamages();
+    console.log(damages);
+    this.setState({ markers: damages.data });
+  }
+  switchToStandard = () => {
+    console.log("changing");
+    this.setState({
+      mapType: "standard"
     });
   };
 
@@ -86,11 +141,11 @@ export class ViewMap extends React.Component {
           ref={map => (this.map = map)}
           style={styles.container}
           customMapStyle={RetroMapStyles}
-          // mapType={"hybrid"}
+          mapType={this.state.mapType}
           showsCompass={false}
           showsUserLocation={true}
-          region={this.state.region}
           zoomEnabled={true}
+          region={this.state.region}
           showsBuildings={true}
           showsTraffic={true}
           showsIndoors={true}
@@ -98,21 +153,51 @@ export class ViewMap extends React.Component {
 
           onRegionChangeComplete={region => this.setState({ region })}
         >
-          {/* {
-            <MapView.Marker
-              coordinate={this.state.region}
-              onDragEnd={e =>
-                this.setState({ region: e.nativeEvent.coordinate })
-              }
-            />
-          } */}
+          {this.state.isloaded &&
+            this.state.markers.map((marker, index) => {
+              return (
+                <MapView.Marker
+                  key={index}
+                  coordinate={marker.coordinates}
+                ></MapView.Marker>
+              );
+            })}
         </MapView>
+        <View style={styles.marker}>
+          <Button
+            onPress={this.showmarker}
+            title="Show marker"
+            color={this.state.isloaded ? "blue" : "grey"}
+          />
+        </View>
 
         <FAB
           style={styles.gps}
           icon="map-marker-plus"
           onPress={this.toggleDiv}
         />
+
+        <ActionButton
+          title="Maptype"
+          buttonColor="rgba(231,76,60,1)"
+          style={styles.FAB}
+        >
+          <ActionButton.Item
+            buttonColor="#9b59b6"
+            title="Satellite"
+            onPress={this.switchToSatellite}
+          >
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#3498db"
+            title="Standard"
+            onPress={this.switchToStandard}
+          >
+            <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+
         <FAB
           style={styles.compass}
           icon="crosshairs-gps"
@@ -143,7 +228,10 @@ export class ViewMap extends React.Component {
       </View>
     );
   }
-  componentDidMount() {
+
+  async componentDidMount() {
+    this.fetchCoordinate;
+
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({

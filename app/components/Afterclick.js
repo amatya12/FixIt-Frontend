@@ -12,7 +12,6 @@ export class Afterclick extends React.Component {
   constructor() {
     super();
     this.state = {
-      show: false,
       modalVisible: false
     };
   }

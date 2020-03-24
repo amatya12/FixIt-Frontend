@@ -47,5 +47,6 @@ export default StyleSheet.create({
         bottom: 350,
        
         
-      },
+      }
+    
 });
