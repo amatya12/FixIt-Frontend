@@ -33,20 +33,8 @@ export class ViewMap extends React.Component {
   constructor() {
     super();
     this.state = {
-      markers: [
-        // {
-        //   coordinate: {
-        //     latitude: 45.524548,
-        //     longitude: -122.6749817
-        //   }
-        // },
-        // {
-        //   coordinate: {
-        //     latitude: 45.524698,
-        //     longitude: -122.6655507
-        //   }
-        // }
-      ],
+      markers: [],
+
 
       region: {
         latitude: LATITUDE,
@@ -133,7 +121,9 @@ export class ViewMap extends React.Component {
   };
 
   render() {
+
     return (
+
       <View style={styles.map}>
         <MapView
           ref={map => (this.map = map)}
@@ -151,13 +141,15 @@ export class ViewMap extends React.Component {
 
           onRegionChangeComplete={region => this.setState({ region })}
         >
+
           {this.state.isloaded &&
             this.state.markers.map((marker, index) => {
               return (
                 <MapView.Marker
                   key={index}
                   coordinate={marker.coordinates}
-                ></MapView.Marker>
+                >
+                </MapView.Marker>
               );
             })}
         </MapView>
@@ -207,7 +199,7 @@ export class ViewMap extends React.Component {
             dataFromParent={this.state.region.latitude}
             dataFromP={this.state.region.longitude}
             hideOverlay={this.hide_overlay}
-            fetchCoordinates={this.fetchCoordinates}
+            fetchCoordinates={this.fetchCoordinate}
           />
         )}
 

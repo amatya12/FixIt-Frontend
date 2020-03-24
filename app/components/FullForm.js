@@ -146,7 +146,7 @@ export class FullForm extends React.Component {
 
   postInitialIssue() {
     axios
-      .post("http://192.168.1.25:5001/api/issue", {
+      .post("http://192.168.1.249:5001/api/issue", {
         issues: this.state.issues,
         subCategoryId: this.state.subCategoryId,
         imageUrl: this.state.imagebase64,
@@ -157,17 +157,19 @@ export class FullForm extends React.Component {
       .then(response => {
         console.log(response.data);
         console.log(response.status);
+        this.props.fetchCoordinates();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
+    this.props.modelclosed();
 
     // axios.get("https://api.github.com/users/mapbox").then(response => {
     //   console.log(response.data);
     //   console.log(response.status);
     // });
     alert(" posted succesfully");
-    this.props.modelclosed();
+
   }
 
   onSelectedItemsChange = subCategoryId => {
@@ -219,19 +221,19 @@ export class FullForm extends React.Component {
   ) {
     alert(
       "Issue: " +
-        issues +
-        " Location: " +
-        location +
-        " latitude: " +
-        latitude +
-        " longitude: " +
-        longitude +
-        "priority:" +
-        priority +
-        "subcategoryID:" +
-        subCategoryId +
-        "image:" +
-        image
+      issues +
+      " Location: " +
+      location +
+      " latitude: " +
+      latitude +
+      " longitude: " +
+      longitude +
+      "priority:" +
+      priority +
+      "subcategoryID:" +
+      subCategoryId +
+      "image:" +
+      image
     );
   }
 

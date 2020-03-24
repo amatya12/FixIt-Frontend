@@ -38,6 +38,7 @@ export class Afterclick extends React.Component {
             lat={this.props.dataFromParent}
             long={this.props.dataFromP}
             modelclosed={() => this.closeModal()}
+            fetchCoordinates={this.props.fetchCoordinates}
           />
         </Modal>
 
