@@ -54,7 +54,7 @@ export class ViewMap extends React.Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
-      mapType: "standard",
+      mapType: "satellite",
       show: false,
       isloaded: true
     };
@@ -66,7 +66,11 @@ export class ViewMap extends React.Component {
 
     this.switchToStandard = this.switchToStandard.bind(this);
     this.showmarker = this.showmarker.bind(this);
-    this.fetchCoordinate = this.fetchCoordinate.bind(this);
+    this.fetchCoordinates = this.fetchCoordinates.bind(this);
+  }
+  async fetchCoordinates() {
+    const damages = await ajax.fetchDamanges();
+    this.setState({ markers: damages.data });
   }
   autolocate = position => {
     this.map.animateToRegion({
@@ -97,10 +101,8 @@ export class ViewMap extends React.Component {
     this.setState({ show: !show });
   };
   async showmarker() {
-    this.fetchCoordinate;
-
+    this.fetchCoordinates();
     const { isloaded } = this.state;
-
     this.setState({ isloaded: !isloaded });
   }
   hide_overlay() {
@@ -122,11 +124,7 @@ export class ViewMap extends React.Component {
       mapType: "satellite"
     });
   };
-  async fetchCoordinate() {
-    const damages = await ajax.fetchDamages();
-    console.log(damages);
-    this.setState({ markers: damages.data });
-  }
+
   switchToStandard = () => {
     console.log("changing");
     this.setState({
@@ -166,8 +164,8 @@ export class ViewMap extends React.Component {
         <View style={styles.marker}>
           <Button
             onPress={this.showmarker}
-            title="Show marker"
-            color={this.state.isloaded ? "blue" : "grey"}
+            title="Damages"
+            color={this.state.isloaded ? "red" : "grey"}
           />
         </View>
 
@@ -209,6 +207,7 @@ export class ViewMap extends React.Component {
             dataFromParent={this.state.region.latitude}
             dataFromP={this.state.region.longitude}
             hideOverlay={this.hide_overlay}
+            fetchCoordinates={this.fetchCoordinates}
           />
         )}
 
@@ -228,9 +227,8 @@ export class ViewMap extends React.Component {
       </View>
     );
   }
-
   async componentDidMount() {
-    this.fetchCoordinate;
+    this.fetchCoordinates();
 
     navigator.geolocation.getCurrentPosition(
       position => {

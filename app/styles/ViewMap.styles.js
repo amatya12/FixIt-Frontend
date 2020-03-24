@@ -47,8 +47,9 @@ export default StyleSheet.create({
   marker: {
     position: "absolute",
 
-    right: 280,
-    bottom: 470
+    right: 300,
+
+    bottom: 670
   },
   maptype: {
     position: "absolute",
@@ -81,18 +82,18 @@ export default StyleSheet.create({
     padding: 70
   },
   GridViewContainer: {
-    flex:1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     height: 100,
     margin: 5,
-    backgroundColor: '#7B1FA2'
- },
- GridViewTextLayout: {
+    backgroundColor: "#7B1FA2"
+  },
+  GridViewTextLayout: {
     fontSize: 20,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    color: '#fff',
-    padding: 10,
+    fontWeight: "bold",
+    justifyContent: "center",
+    color: "#fff",
+    padding: 10
   }
 });
