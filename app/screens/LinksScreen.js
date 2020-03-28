@@ -14,5 +14,5 @@ export default function LinksScreen() {
 }
 
 LinksScreen.navigationOptions = {
-  title: "Quick Links"
+  title: "Departments"
 };
