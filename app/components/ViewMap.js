@@ -69,7 +69,7 @@ export class ViewMap extends React.Component {
     this.fetchCoordinates = this.fetchCoordinates.bind(this);
   }
   async fetchCoordinates() {
-    const damages = await ajax.fetchDamanges();
+    const damages = await ajax.fetchDamages();
     this.setState({ markers: damages.data });
   }
   autolocate = position => {
