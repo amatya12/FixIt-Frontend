@@ -1,18 +1,18 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgba(29,29,29,0)',
     },
-    title:{
+    title: {
         fontSize: 24,
         color: 'rgb(0,0,0)',
         lineHeight: 24,
         textAlign: 'center',
 
     },
-    cardContainer:{
+    cardContainer: {
         flex: 10,
         alignSelf: 'center',
         flexDirection: 'column',
@@ -23,8 +23,8 @@ export default StyleSheet.create({
         borderColor: '#000',
 
     },
-    member:{
-        padding:8,
+    member: {
+        padding: 8,
         fontSize: 14,
         color: 'rgb(0,0,0)',
         lineHeight: 20,
@@ -44,7 +44,7 @@ export default StyleSheet.create({
         marginTop: 10,
         marginLeft: -10,
     },
-    welcomeText:{
+    welcomeText: {
         fontSize: 24,
         color: 'rgb(0,0,0)',
         lineHeight: 24,
@@ -55,7 +55,7 @@ export default StyleSheet.create({
         marginHorizontal: 50,
     },
     getStartedText: {
-        padding:10,
+        padding: 10,
         fontSize: 14,
         color: 'rgb(0,0,0)',
         lineHeight: 20,
@@ -66,25 +66,14 @@ export default StyleSheet.create({
         marginBottom: 10,
         borderRadius: 4,
         paddingVertical: 10,
-        paddingHorizontal:10,
+        paddingHorizontal: 10,
         width: '100%',
     },
-    button:{
+    button: {
         backgroundColor: 'rgba(88,88,88,0.71)',
 
 
     },
-    buttonText:{
-        padding:10,
-        fontSize: 14,
-        color: 'rgba(247,247,247,0.4)',
-        lineHeight: 20,
-        textAlign: 'center',
 
-    },
-    signUp:{
-        fontSize: 14,
-        color: 'rgb(108,0,54)',
 
-    }
 });

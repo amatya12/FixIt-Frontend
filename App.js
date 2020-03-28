@@ -4,8 +4,10 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
 import AppNavigator from './app/navigation/AppNavigator';
+import HomeScreen from './app/screens/HomeScreen';
+import DamageScreen from './app/screens/DamageScreen';
+
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -23,6 +25,7 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
+
       </View>
     );
   }
@@ -50,7 +53,8 @@ function handleLoadingError(error) {
   console.warn(error);
 }
 
-function handleFinishLoading(setLoadingComplete) {
+function handleFinishLoading(
+  setLoadingComplete) {
   setLoadingComplete(true);
 }
 
