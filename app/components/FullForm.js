@@ -317,17 +317,17 @@ export class FullForm extends React.Component {
             </TouchableOpacity>
           )}
 
-          <Text style={{ marginLeft: 20, fontSize: 20 }}>GPS Coordinate</Text>
+          <Text style={{ marginLeft: "1%", fontSize: 20 }}>GPS Coordinate</Text>
 
           <View style={globalStyles.gpscord}>
             <View style={{ flex: 1, flexDirection: "column" }}>
-              <Text style={{ left: 10 }}>Latitude</Text>
+              <Text style={{ left: "1%" }}>Latitude</Text>
               <Text value={this.state.latitude} style={globalStyles.input}>
                 {this.state.latitude}
               </Text>
             </View>
             <View style={{ flex: 1, flexDirection: "column" }}>
-              <Text style={{ left: 10 }}>Longitude</Text>
+              <Text style={{ left: "1%" }}>Longitude</Text>
               <Text value={this.state.longitude} style={globalStyles.input}>
                 {this.state.longitude}
               </Text>
@@ -335,7 +335,7 @@ export class FullForm extends React.Component {
           </View>
 
           <View style={globalStyles.buttonSection}>
-            <View style={{ flex: 1, marginRight: 10 }}>
+            <View style={{ flex: 1, marginRight: "2%" }}>
               <Button
                 onPress={this.props.modelclosed}
                 title="Cancel"
@@ -344,7 +344,7 @@ export class FullForm extends React.Component {
               />
             </View>
 
-            <View style={{ flex: 1, marginRight: 10 }}>
+            <View style={{ flex: 1, marginRight: "1%" }}>
               <Button
                 title="Submit"
                 color="green"

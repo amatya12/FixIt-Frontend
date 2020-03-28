@@ -1,5 +1,5 @@
 import axios from "axios";
-const Host = 'http://192.168.1.249:5001';
+const Host = "http://192.168.1.25:5001";
 
 export default {
   async fetchDamages() {
@@ -9,22 +9,14 @@ export default {
     } catch (e) {
       console.error(e);
     }
-  }
-  ,
-
+  },
   async fetchDepartments() {
     try {
       const result = await axios.get(`${Host}/api/department`);
       //console.log(result.data);
       return result.data;
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }
-
-
-
 };
-
-

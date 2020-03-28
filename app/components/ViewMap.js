@@ -60,7 +60,7 @@ export class ViewMap extends React.Component {
     };
     this.toggleDiv = this.toggleDiv.bind(this);
     this.hide_overlay = this.hide_overlay.bind(this);
-    this.autolocate = this.autolocate.bind(this);
+
     this.switchMapType = this.switchMapType.bind(this);
     this.switchToSatellite = this.switchToSatellite.bind(this);
 
@@ -72,13 +72,6 @@ export class ViewMap extends React.Component {
     const damages = await ajax.fetchDamages();
     this.setState({ markers: damages.data });
   }
-  autolocate = position => {
-    this.map.animateToRegion({
-      ...this.state.region,
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    });
-  };
 
   picklocationHandler = event => {
     navigator.geolocation.getCurrentPosition(
@@ -136,6 +129,7 @@ export class ViewMap extends React.Component {
     return (
       <View style={styles.map}>
         <MapView
+          provider={PROVIDER_GOOGLE}
           ref={map => (this.map = map)}
           style={styles.container}
           customMapStyle={RetroMapStyles}
@@ -143,12 +137,12 @@ export class ViewMap extends React.Component {
           showsCompass={false}
           showsUserLocation={true}
           zoomEnabled={true}
-          region={this.state.region}
           showsBuildings={true}
+          //region={this.state.region}
           showsTraffic={true}
           showsIndoors={true}
           //showsMyLocationButton={true}
-
+          onRegionChange={region => this.setState({ region })}
           onRegionChangeComplete={region => this.setState({ region })}
         >
           {this.state.isloaded &&
@@ -228,6 +222,7 @@ export class ViewMap extends React.Component {
     );
   }
   async componentDidMount() {
+    this.picklocationHandler();
     this.fetchCoordinates();
 
     navigator.geolocation.getCurrentPosition(

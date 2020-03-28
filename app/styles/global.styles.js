@@ -6,19 +6,12 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333"
   },
-  paragraph: {
-    marginVertical: 8,
-    lineHeight: 20
-  },
-  container: {
-    flex: 1,
-    padding: 20
-  },
+
   input: {
     borderWidth: 1,
     borderColor: "#ddd",
-    padding: 20,
-    margin: 10,
+    padding: "7%",
+    margin: "2%",
     fontSize: 18,
     borderRadius: 6,
     textAlignVertical: "top"
@@ -26,8 +19,8 @@ export const globalStyles = StyleSheet.create({
   searchSection: {
     borderWidth: 1,
     borderColor: "#ddd",
-    padding: 10,
-    margin: 10,
+    padding: "0.0001%",
+    margin: "0.4%",
     fontSize: 18,
     borderRadius: 6,
     flexDirection: "row",
@@ -35,32 +28,32 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   formView: {
-    margin: 10,
+    margin: "3%",
     borderRadius: 20,
     borderWidth: 2,
     borderColor: "black",
     backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
   },
   formelement: {
-    margin: 10,
-    paddingLeft: 15,
+    margin: "2%",
+    paddingLeft: "1%",
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 6
   },
   gpscord: {
     width: "80%",
-    margin: 20,
+    margin: "8%",
 
     borderColor: "black",
     borderRadius: 2
   },
   scroll: {
-    margin: 20
+    margin: "2%"
   },
   buttonSection: {
     width: "90%",
-    margin: 10,
+    margin: "1%",
     flexDirection: "row"
   }
 });

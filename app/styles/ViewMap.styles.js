@@ -16,9 +16,9 @@ export default StyleSheet.create({
   },
   gps: {
     position: "absolute",
-    margin: 16,
-    right: 10,
-    bottom: 50,
+
+    right: "5%",
+    bottom: "5%",
     paddingTop: 2,
     paddingBottom: 2,
     paddingLeft: 2,
@@ -27,17 +27,17 @@ export default StyleSheet.create({
   },
   compass: {
     position: "absolute",
-    margin: 16,
-    right: 16,
 
-    bottom: 650,
+    right: "5%",
+
+    bottom: "82%",
     backgroundColor: "#ffffff"
   },
   latlong: {
     position: "absolute",
     margin: 16,
-    right: 100,
-    bottom: 20,
+    right: "20%",
+    bottom: "3%",
     backgroundColor: "green",
     borderWidth: 2,
     borderColor: "green",
@@ -47,21 +47,15 @@ export default StyleSheet.create({
   marker: {
     position: "absolute",
 
-    right: 300,
+    right: "75%",
 
-    bottom: 670
+    bottom: "82%"
   },
-  maptype: {
-    position: "absolute",
 
-    right: 40,
-    bottom: 570
-  },
   FAB: {
     position: "absolute",
-
-    right: 5,
-    bottom: 320,
+    right: "1%",
+    bottom: "50%",
     paddingTop: 2,
     paddingBottom: 2,
     paddingLeft: 2,

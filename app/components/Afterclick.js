@@ -25,7 +25,7 @@ export class Afterclick extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={style.map}>
         <Modal
           animationType="slide"
           transparent={true}
