@@ -35,8 +35,8 @@ export class Afterclick extends React.Component {
           swipeDirection="left"
         >
           <FullForm
-            lat={this.props.dataFromParent}
-            long={this.props.dataFromP}
+            lat={this.props.coordinates.latitude}
+            long={this.props.coordinates.longitude}
             modelclosed={() => this.closeModal()}
             fetchCoordinates={this.props.fetchCoordinates}
           />

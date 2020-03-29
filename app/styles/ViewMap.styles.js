@@ -30,7 +30,7 @@ export default StyleSheet.create({
     margin: 16,
     right: 16,
 
-    bottom: 650,
+    bottom: 400,
     backgroundColor: "#ffffff"
   },
   latlong: {

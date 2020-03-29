@@ -31,6 +31,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export class ViewMap extends React.Component {
   constructor() {
+
     super();
     this.state = {
       markers: [
@@ -47,8 +48,13 @@ export class ViewMap extends React.Component {
         //   }
         // }
       ],
-
-      region: {
+      userLocation: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      initialRegion: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
@@ -60,31 +66,32 @@ export class ViewMap extends React.Component {
     };
     this.toggleDiv = this.toggleDiv.bind(this);
     this.hide_overlay = this.hide_overlay.bind(this);
-    this.autolocate = this.autolocate.bind(this);
+    // this.autolocate = this.autolocate.bind(this);
     this.switchMapType = this.switchMapType.bind(this);
     this.switchToSatellite = this.switchToSatellite.bind(this);
 
     this.switchToStandard = this.switchToStandard.bind(this);
     this.showmarker = this.showmarker.bind(this);
     this.fetchCoordinates = this.fetchCoordinates.bind(this);
+    // this.onMapReady = this.onMapReady.bind(this);
   }
   async fetchCoordinates() {
     const damages = await ajax.fetchDamages();
     this.setState({ markers: damages.data });
   }
-  autolocate = position => {
-    this.map.animateToRegion({
-      ...this.state.region,
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    });
-  };
+  // autolocate = position => {
+  //   this.map.animateToRegion({
+  //     ...this.state.region,
+  //     latitude: position.coords.latitude,
+  //     longitude: position.coords.longitude
+  //   });
+  // };
 
   picklocationHandler = event => {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.map.animateToRegion({
-          ...this.state.region,
+          ...this.state.userLocation,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         });
@@ -125,6 +132,10 @@ export class ViewMap extends React.Component {
     });
   };
 
+
+  // onMapReady = () => {
+  //   Platform.OS === 'ios' && this.map.animateToRegion(region = { latitude: LATITUDE, longitude: LONGITUDE }, 0.1); // TODO remove once the initialRegion is fixed in the module
+  // };
   switchToStandard = () => {
     console.log("changing");
     this.setState({
@@ -136,20 +147,26 @@ export class ViewMap extends React.Component {
     return (
       <View style={styles.map}>
         <MapView
+
+          provider={PROVIDER_GOOGLE}
           ref={map => (this.map = map)}
           style={styles.container}
           customMapStyle={RetroMapStyles}
           mapType={this.state.mapType}
-          showsCompass={false}
+          showsCompass={true}
           showsUserLocation={true}
           zoomEnabled={true}
-          region={this.state.region}
           showsBuildings={true}
           showsTraffic={true}
           showsIndoors={true}
           //showsMyLocationButton={true}
+          //onMapReady={this.onMapReady}
+          onRegionChangeComplete={region => {
+            console.log(region);
+            this.setState({ userLocation: region })
+            console.log("The new state is", this.state.userLocation)
+          }}
 
-          onRegionChangeComplete={region => this.setState({ region })}
         >
           {this.state.isloaded &&
             this.state.markers.map((marker, index) => {
@@ -204,16 +221,15 @@ export class ViewMap extends React.Component {
 
         {this.state.show && (
           <Afterclick
-            dataFromParent={this.state.region.latitude}
-            dataFromP={this.state.region.longitude}
+            coordinates={this.state.userLocation}
             hideOverlay={this.hide_overlay}
             fetchCoordinates={this.fetchCoordinates}
           />
         )}
 
         <View style={styles.latlong}>
-          <Text>Latitude:: {this.state.region.latitude}</Text>
-          <Text>Longitude:: {this.state.region.longitude}</Text>
+          <Text>Latitude:: {this.state.userLocation.latitude}</Text>
+          <Text>Longitude:: {this.state.userLocation.longitude}</Text>
           {/* <TouchableOpacity
             onPress={() => {
               this.getData();
@@ -228,12 +244,13 @@ export class ViewMap extends React.Component {
     );
   }
   async componentDidMount() {
+    this.picklocationHandler();
     this.fetchCoordinates();
 
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
-          region: {
+          initialRegion: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
@@ -246,7 +263,7 @@ export class ViewMap extends React.Component {
     );
     this.watchID = navigator.geolocation.watchPosition(position => {
       this.setState({
-        region: {
+        initialRegion: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
           latitudeDelta: LATITUDE_DELTA,
