@@ -3,49 +3,41 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF"
   },
   map: {
-
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0
-
+    position: "absolute"
   },
-  ok: {
-    position: 'absolute',
-    margin: 16,
-    right: 75,
-    bottom: 125,
-    backgroundColor: '#F0E9E7'
 
+  ok: {
+    position: "absolute",
+    bottom: "0%",
+    marginBottom: "20%",
+
+    right: "25%",
+
+    backgroundColor: "#F0E9E7"
   },
   cancel: {
-    position: 'absolute',
-    margin: 16,
-    right: 200,
-    bottom: 125,
-    backgroundColor: '#EBCA10'
-
+    position: "absolute",
+    right: "53%",
+    bottom: "0%",
+    marginBottom: "20%",
+    backgroundColor: "#EBCA10"
   },
+
   mappin: {
-    position: 'absolute',
-    margin: 16,
-    right: 175,
-    bottom: 400,
-
-
+    position: "absolute",
+    right: "46.75%",
+    marginBottom: "51.5%",
+    bottom: "53%"
   },
   target: {
-    position: 'absolute',
-    padding: '50%',
-
-
-
+    position: "absolute",
+    marginBottom: "45.75%",
+    right: "44%",
+    bottom: "0%"
   }
-
 });

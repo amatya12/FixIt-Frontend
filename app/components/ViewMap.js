@@ -147,7 +147,6 @@ export class ViewMap extends React.Component {
     return (
       <View style={styles.map}>
         <MapView
-
           provider={PROVIDER_GOOGLE}
           ref={map => (this.map = map)}
           style={styles.container}
@@ -157,6 +156,7 @@ export class ViewMap extends React.Component {
           showsUserLocation={true}
           zoomEnabled={true}
           showsBuildings={true}
+          //region={this.state.region}
           showsTraffic={true}
           showsIndoors={true}
           //showsMyLocationButton={true}
