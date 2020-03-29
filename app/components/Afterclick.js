@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal, Button } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/FontAwesome5";
 import { FAB } from "react-native-paper";
 import style from "../styles/AfterClick.styles";
-
+import styles from "../styles/ViewMap.styles";
 import { FullForm } from "../components/FullForm";
 
 export class Afterclick extends React.Component {
@@ -25,7 +25,7 @@ export class Afterclick extends React.Component {
 
   render() {
     return (
-      <View style={style.map}>
+      <View>
         <Modal
           animationType="slide"
           transparent={true}

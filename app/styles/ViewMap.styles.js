@@ -7,6 +7,7 @@ export default StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
+
   map: {
     position: "absolute",
     top: 0,
@@ -33,6 +34,7 @@ export default StyleSheet.create({
     bottom: "82%",
     backgroundColor: "#ffffff"
   },
+
   latlong: {
     position: "absolute",
     margin: 16,
@@ -57,10 +59,11 @@ export default StyleSheet.create({
     right: "1%",
     bottom: "50%",
     paddingTop: 2,
-    paddingBottom: 2,
+    paddingBottom: "20%",
     paddingLeft: 2,
     paddingRight: 2
   },
+
   actionButtonIcon: {
     fontSize: 20,
     height: 22,
