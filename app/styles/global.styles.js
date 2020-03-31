@@ -52,8 +52,7 @@ export const globalStyles = StyleSheet.create({
     margin: "2%"
   },
   buttonSection: {
-    width: "90%",
-    margin: "1%",
-    flexDirection: "row"
+    flexDirection: "row",
+    width: "95%"
   }
 });

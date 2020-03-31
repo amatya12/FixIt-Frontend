@@ -28,7 +28,7 @@ export default StyleSheet.create({
   },
   compass: {
     position: "absolute",
-    right: "5%",
+    right: "7%",
     bottom: "82%",
     backgroundColor: "#ffffff"
   },
@@ -48,18 +48,39 @@ export default StyleSheet.create({
     position: "absolute",
 
     right: "70%",
-
+    borderRadius: 20,
     bottom: "75%"
+  },
+  road: {
+    position: "absolute",
+
+    right: "78%",
+    borderRadius: 20,
+    bottom: "68%"
+  },
+  roadside: {
+    position: "absolute",
+
+    right: "70%",
+    borderRadius: 20,
+    bottom: "82%"
+  },
+  SignAndLights: {
+    position: "absolute",
+
+    right: "60%",
+    borderRadius: 20,
+
+    bottom: "90%"
   },
 
   FAB: {
     position: "absolute",
-    right: "1%",
-    bottom: "50%",
-    paddingTop: 2,
-    paddingBottom: "20%",
-    paddingLeft: 2,
-    paddingRight: 2
+
+    right: "0%",
+    borderRadius: 20,
+
+    bottom: "50%"
   },
 
   bottom: {

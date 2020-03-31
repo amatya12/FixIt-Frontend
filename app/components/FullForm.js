@@ -6,7 +6,6 @@ import {
   Picker,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
   Dimensions,
   ScrollView
@@ -25,6 +24,7 @@ import style from "../styles/AfterClick.styles";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { Dropdown } from "react-native-material-dropdown";
 import { ViewMap } from "../components/ViewMap";
+import { Button } from "react-native-paper";
 
 const items = [
   {
@@ -336,23 +336,25 @@ export class FullForm extends React.Component {
           </View>
 
           <View style={globalStyles.buttonSection}>
-            <View style={{ flex: 1, marginRight: "2%" }}>
-              <Button
-                onPress={this.props.modelclosed}
-                title="Cancel"
-                borderRadius="10"
-                color="red"
-              />
-            </View>
+            <Button
+              onPress={this.props.modelclosed}
+              borderRadius="10"
+              color="red"
+              mode="contained"
+              style={{ flex: 1, marginRight: "1%" }}
+            >
+              Cancel
+            </Button>
 
-            <View style={{ flex: 1, marginRight: "1%" }}>
-              <Button
-                title="Submit"
-                color="green"
-                borderRadius="10"
-                onPress={this.postInitialIssue}
-              />
-            </View>
+            <Button
+              mode="contained"
+              style={{ flex: 1, marginRight: "1%" }}
+              color="green"
+              borderRadius="10"
+              onPress={this.postInitialIssue}
+            >
+              Submit
+            </Button>
           </View>
         </ScrollView>
       </View>

@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import RetroMapStyles from "../MapStyles/RetroMapStyles.json";
 import { FAB, Appbar, Card, Button } from "react-native-paper";
 import styles from "../styles/ViewMap.styles";
@@ -27,25 +27,15 @@ const LATITUDE = 30.508067876956304;
 const LONGITUDE = -90.47499272972345;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const pinColor = "#000000";
 
 export class ViewMap extends React.Component {
   constructor() {
     super();
     this.state = {
-      markers: [
-        // {
-        //   coordinate: {
-        //     latitude: 45.524548,
-        //     longitude: -122.6749817
-        //   }
-        // },
-        // {
-        //   coordinate: {
-        //     latitude: 45.524698,
-        //     longitude: -122.6655507
-        //   }
-        // }
-      ],
+      markersForRoads: [],
+      markersForRoadSides: [],
+      markersForSigns: [],
       userLocation: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -60,7 +50,10 @@ export class ViewMap extends React.Component {
       },
       mapType: "satellite",
       show: false,
-      isloaded: true
+      isLoaded: false,
+      isLoadedForRoad: false,
+      isLoadedForRoadSide: false,
+      isLoadedForSign: false
     };
     this.toggleDiv = this.toggleDiv.bind(this);
     this.hide_overlay = this.hide_overlay.bind(this);
@@ -71,21 +64,78 @@ export class ViewMap extends React.Component {
     this.switchToStandard = this.switchToStandard.bind(this);
     this.showmarker = this.showmarker.bind(this);
     this.fetchCoordinates = this.fetchCoordinates.bind(this);
-    // this.onMapReady = this.onMapReady.bind(this);
+    this.showMarkerForRoad = this.showMarkerForRoad.bind(this);
+    this.fetchCoordinatesForRoad = this.fetchCoordinatesForRoad.bind(this);
+    this.showMarkerForRoadSide = this.showMarkerForRoadSide.bind(this);
+    this.fetchCoordinatesForRoadSide = this.fetchCoordinatesForRoadSide.bind(
+      this
+    );
+    this.showMarkerForSign = this.showMarkerForSign.bind(this);
+    this.fetchCoordinatesForSign = this.fetchCoordinatesForSign.bind(this);
   }
   async fetchCoordinates() {
     const damages = await ajax.fetchDamages();
     this.setState({ markers: damages.data });
   }
-  // autolocate = position => {
-  //   this.map.animateToRegion({
-  //     ...this.state.region,
-  //     latitude: position.coords.latitude,
-  //     longitude: position.coords.longitude
-  //   });
-  // };
+  async fetchCoordinatesForRoad() {
+    const damages = await ajax.fetchDamagesforRoad();
 
-  picklocationHandler = (event) => {
+    this.setState({ markersForRoads: damages.data });
+  }
+  async fetchCoordinatesForRoadSide() {
+    const damages = await ajax.fetchDamagesforRoadSide();
+
+    this.setState({ markersForRoadSides: damages.data });
+  }
+  async fetchCoordinatesForSign() {
+    const damages = await ajax.fetchDamagesforSign();
+
+    this.setState({ markersForSigns: damages.data });
+  }
+  async showmarker() {
+    const {
+      isLoaded,
+      isLoadedForRoad,
+      isLoadedForRoadSide,
+      isLoadedForSign
+    } = this.state;
+
+    this.showMarkerForRoad();
+    this.showMarkerForRoadSide();
+    this.showMarkerForSign();
+    console.log("THe initial value of isloaded", isLoaded);
+    this.setState({ isLoaded: !isLoaded });
+    console.log("The final value of isloaded", isLoaded);
+
+    if (isLoaded == false) {
+      //console.log("The isLoaded value is", isloaded);
+      this.setState({ isLoadedForRoad: true });
+      // console.log("The isloaded value for road is", isLoadedForRoad);
+      this.setState({ isLoadedForRoadSide: true });
+      this.setState({ isLoadedForSign: true });
+    } else {
+      this.setState({ isLoadedForRoad: false });
+      this.setState({ isLoadedForRoadSide: false });
+      this.setState({ isLoadedForSign: false });
+    }
+  }
+  async showMarkerForRoad() {
+    this.fetchCoordinatesForRoad();
+    const { isLoadedForRoad } = this.state;
+    this.setState({ isLoadedForRoad: !isLoadedForRoad });
+  }
+  async showMarkerForRoadSide() {
+    this.fetchCoordinatesForRoadSide();
+    const { isLoadedForRoadSide } = this.state;
+    this.setState({ isLoadedForRoadSide: !isLoadedForRoadSide });
+  }
+  async showMarkerForSign() {
+    this.fetchCoordinatesForSign();
+    const { isLoadedForSign } = this.state;
+    this.setState({ isLoadedForSign: !isLoadedForSign });
+  }
+
+  picklocationHandler = event => {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.map.animateToRegion({
@@ -105,11 +155,7 @@ export class ViewMap extends React.Component {
 
     this.setState({ show: !show });
   };
-  async showmarker() {
-    this.fetchCoordinates();
-    const { isloaded } = this.state;
-    this.setState({ isloaded: !isloaded });
-  }
+
   hide_overlay() {
     this.setState({ show: false });
   }
@@ -164,12 +210,48 @@ export class ViewMap extends React.Component {
             console.log("The new state is", this.state.userLocation);
           }}
         >
-          {this.state.isloaded &&
+          {/* {this.state.isloaded &&
             this.state.markers.map((marker, index) => {
               return (
                 <MapView.Marker
                   key={index}
                   coordinate={marker.coordinates}
+                ></MapView.Marker>
+              );
+            })} */}
+          {this.state.isLoadedForRoad &&
+            this.state.markersForRoads.map((markersForRoad, index) => {
+              return (
+                <MapView.Marker
+                  key={index}
+                  coordinate={markersForRoad.coordinates}
+                  pinColor={"gold"}
+                >
+                  <Callout>
+                    <Text>{markersForRoad.issues}</Text>
+                    <Text>{markersForRoad.location}</Text>
+                    <Text>Solved</Text>
+                  </Callout>
+                </MapView.Marker>
+              );
+            })}
+          {this.state.isLoadedForRoadSide &&
+            this.state.markersForRoadSides.map((markersForRoadSide, index) => {
+              return (
+                <MapView.Marker
+                  key={index}
+                  coordinate={markersForRoadSide.coordinates}
+                  pinColor={"navy"}
+                ></MapView.Marker>
+              );
+            })}
+          {this.state.isLoadedForSign &&
+            this.state.markersForSigns.map((markersForSign, index) => {
+              return (
+                <MapView.Marker
+                  key={index}
+                  coordinate={markersForSign.coordinates}
+                  pinColor={"plum"}
                 ></MapView.Marker>
               );
             })}
@@ -178,10 +260,34 @@ export class ViewMap extends React.Component {
         <Button
           onPress={this.showmarker}
           mode="contained"
-          color={this.state.isloaded ? "red" : "grey"}
+          color={this.state.isLoaded ? "red" : "grey"}
           style={styles.marker}
         >
           Damages
+        </Button>
+        <Button
+          onPress={this.showMarkerForRoad}
+          mode="contained"
+          color={this.state.isLoadedForRoad ? "red" : "grey"}
+          style={styles.road}
+        >
+          Road
+        </Button>
+        <Button
+          onPress={this.showMarkerForRoadSide}
+          mode="contained"
+          color={this.state.isLoadedForRoadSide ? "red" : "grey"}
+          style={styles.roadside}
+        >
+          Roadside
+        </Button>
+        <Button
+          onPress={this.showMarkerForSign}
+          mode="contained"
+          color={this.state.isLoadedForSign ? "red" : "grey"}
+          style={styles.SignAndLights}
+        >
+          Sign & Lights
         </Button>
 
         <FAB
@@ -243,7 +349,6 @@ export class ViewMap extends React.Component {
   }
   async componentDidMount() {
     this.picklocationHandler();
-    this.fetchCoordinates();
 
     navigator.geolocation.getCurrentPosition(
       position => {
