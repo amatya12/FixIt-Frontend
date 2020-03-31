@@ -13,19 +13,17 @@ export default StyleSheet.create({
 
   ok: {
     position: "absolute",
-    bottom: "0%",
-    marginBottom: "20%",
+    bottom: 0,
+    //marginBottom: "0%",
     right: "25%",
-    height: "20%",
     backgroundColor: "#F0E9E7"
   },
   cancel: {
     position: "absolute",
     right: "53%",
-    bottom: "0%",
-    marginBottom: "20%",
-    backgroundColor: "#EBCA10",
-    height: "20%"
+    bottom: 0,
+    //marginBottom: "20%",
+    backgroundColor: "#EBCA10"
   },
 
   mappin: {
@@ -38,6 +36,16 @@ export default StyleSheet.create({
     position: "absolute",
     right: width * 0.44,
     marginBottom: height * 0.42,
-    bottom: "0%"
+    bottom: "0%",
+    marginBottom: "45.75%",
+    right: "44%",
+    bottom: "0%",
+    flexDirection: "row"
+  },
+
+  okcancel: {
+    position: "relative",
+    bottom: "35%",
+    flexDirection: "row"
   }
 });

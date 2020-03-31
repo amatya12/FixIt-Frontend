@@ -1,10 +1,11 @@
 import axios from "axios";
-const Host = "http://192.168.1.25:5001";
+import API_ENDPOINT from './constants/constants';
+
 
 export default {
   async fetchDamages() {
     try {
-      const result = await axios.get(`${Host}/api/damage`);
+      const result = await axios.get(`${API_ENDPOINT}/damage`);
       return result.data;
     } catch (e) {
       console.error(e);
@@ -12,7 +13,7 @@ export default {
   },
   async fetchDepartments() {
     try {
-      const result = await axios.get(`${Host}/api/department`);
+      const result = await axios.get(`${API_ENDPOINT}/department`);
       //console.log(result.data);
       return result.data;
     } catch (e) {

@@ -22,9 +22,9 @@ import ajax from "../ajax";
 
 let { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
-const LATITUDE = 30.5123;
+const LATITUDE = 30.508067876956304;
 
-const LONGITUDE = -90.470122;
+const LONGITUDE = -90.47499272972345;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -85,7 +85,7 @@ export class ViewMap extends React.Component {
   //   });
   // };
 
-  picklocationHandler = event => {
+  picklocationHandler = (event) => {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.map.animateToRegion({
