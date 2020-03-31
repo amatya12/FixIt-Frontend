@@ -11,6 +11,7 @@ import {
   Dimensions,
   ScrollView
 } from "react-native";
+import API_ENDPOINT from '../constants/constants';
 import axios from "axios";
 import { Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -146,7 +147,7 @@ export class FullForm extends React.Component {
 
   postInitialIssue() {
     axios
-      .post("http://192.168.1.249:5001/api/issue", {
+      .post(`${API_ENDPOINT}/issue`, {
         issues: this.state.issues,
         subCategoryId: this.state.subCategoryId,
         imageUrl: this.state.imagebase64,

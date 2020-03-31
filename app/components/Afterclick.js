@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Modal, Button } from "react-native";
+import { View, StyleSheet, Modal, Button, Text } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/FontAwesome5";
 import { FAB } from "react-native-paper";
 import style from "../styles/AfterClick.styles";
-import styles from "../styles/ViewMap.styles";
+//import styles from "../styles/ViewMap.styles";
 import { FullForm } from "../components/FullForm";
 
 export class Afterclick extends React.Component {
@@ -41,24 +41,26 @@ export class Afterclick extends React.Component {
             fetchCoordinates={this.props.fetchCoordinates}
           />
         </Modal>
+        <View style={style.okcancel}>
+          <FAB
+            style={style.ok}
+            label="OK"
+            icon="check-circle"
+            onPress={() => this.openModal()}
+          />
 
-        <FAB
-          style={style.ok}
-          label="OK"
-          icon="check-circle"
-          onPress={() => this.openModal()}
-        />
+          <FAB
+            style={style.cancel}
+            icon="alpha-x-circle"
+            label="Cancel"
+            onPress={this.props.hideOverlay}
+          />
+        </View>
 
-        <FAB
-          style={style.cancel}
-          icon="alpha-x-circle"
-          label="Cancel"
-          onPress={this.props.hideOverlay}
-        />
 
         <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
         <Icon name="target" style={style.target} size={50} color="#000000" />
-      </View>
+      </View >
     );
   }
 }
