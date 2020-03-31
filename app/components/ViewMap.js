@@ -8,12 +8,11 @@ import {
   Text,
   Animated,
   Image,
-  TouchableOpacity,
-  Button
+  TouchableOpacity
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import RetroMapStyles from "../MapStyles/RetroMapStyles.json";
-import { FAB, Appbar } from "react-native-paper";
+import { FAB, Appbar, Card, Button } from "react-native-paper";
 import styles from "../styles/ViewMap.styles";
 import ActionButton from "react-native-action-button";
 import { Afterclick } from "../components/Afterclick";
@@ -31,7 +30,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export class ViewMap extends React.Component {
   constructor() {
-
     super();
     this.state = {
       markers: [
@@ -132,7 +130,6 @@ export class ViewMap extends React.Component {
     });
   };
 
-
   // onMapReady = () => {
   //   Platform.OS === 'ios' && this.map.animateToRegion(region = { latitude: LATITUDE, longitude: LONGITUDE }, 0.1); // TODO remove once the initialRegion is fixed in the module
   // };
@@ -163,10 +160,9 @@ export class ViewMap extends React.Component {
           //onMapReady={this.onMapReady}
           onRegionChangeComplete={region => {
             console.log(region);
-            this.setState({ userLocation: region })
-            console.log("The new state is", this.state.userLocation)
+            this.setState({ userLocation: region });
+            console.log("The new state is", this.state.userLocation);
           }}
-
         >
           {this.state.isloaded &&
             this.state.markers.map((marker, index) => {
@@ -178,13 +174,15 @@ export class ViewMap extends React.Component {
               );
             })}
         </MapView>
-        <View style={styles.marker}>
-          <Button
-            onPress={this.showmarker}
-            title="Damages"
-            color={this.state.isloaded ? "red" : "grey"}
-          />
-        </View>
+
+        <Button
+          onPress={this.showmarker}
+          mode="contained"
+          color={this.state.isloaded ? "red" : "grey"}
+          style={styles.marker}
+        >
+          Damages
+        </Button>
 
         <FAB
           style={styles.gps}

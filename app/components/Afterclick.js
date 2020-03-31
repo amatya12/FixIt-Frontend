@@ -41,23 +41,20 @@ export class Afterclick extends React.Component {
             fetchCoordinates={this.props.fetchCoordinates}
           />
         </Modal>
-
         <FAB
           style={style.ok}
           label="OK"
           icon="check-circle"
           onPress={() => this.openModal()}
         />
-
         <FAB
           style={style.cancel}
           icon="alpha-x-circle"
           label="Cancel"
           onPress={this.props.hideOverlay}
         />
-
-        <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
-        <Icon name="target" style={style.target} size={50} color="#000000" />
+        <Icon1 name="map-pin" style={style.mappin} size={50} color="#FF6347" />
+        <Icon name="target" style={style.target} size={50} color="#FF6347" />
       </View>
     );
   }

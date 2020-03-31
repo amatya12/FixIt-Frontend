@@ -1,11 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+let { width, height } = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
     flex: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
+
+    height: height,
+    width: width
   },
 
   map: {
@@ -14,6 +15,8 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0
+    // height: height,
+    //width: width
   },
   gps: {
     position: "absolute",
@@ -39,7 +42,7 @@ export default StyleSheet.create({
     position: "absolute",
     margin: 16,
     right: "20%",
-    bottom: "3%",
+    bottom: "2%",
     backgroundColor: "green",
     borderWidth: 2,
     borderColor: "green",
@@ -49,9 +52,9 @@ export default StyleSheet.create({
   marker: {
     position: "absolute",
 
-    right: "75%",
+    right: "70%",
 
-    bottom: "82%"
+    bottom: "75%"
   },
 
   FAB: {
@@ -64,33 +67,18 @@ export default StyleSheet.create({
     paddingRight: 2
   },
 
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: "white"
-  },
   bottom: {
     position: "absolute",
-
-    left: 10,
+    height: "10%",
+    width: "100%",
     right: 10,
     bottom: 0,
     top: 50,
-    padding: 70
+    flexDirection: "row"
   },
-  GridViewContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 100,
-    margin: 5,
-    backgroundColor: "#7B1FA2"
-  },
-  GridViewTextLayout: {
-    fontSize: 20,
-    fontWeight: "bold",
-    justifyContent: "center",
-    color: "#fff",
-    padding: 10
+  buttonitem: {
+    flex: 2,
+    margin: 1,
+    width: "50%"
   }
 });
