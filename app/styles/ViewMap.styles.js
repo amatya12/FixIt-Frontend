@@ -3,10 +3,7 @@ let { width, height } = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
-    flex: 2,
-
-    height: height,
-    width: width
+    flex: 2
   },
 
   map: {
@@ -31,9 +28,7 @@ export default StyleSheet.create({
   },
   compass: {
     position: "absolute",
-
     right: "5%",
-
     bottom: "82%",
     backgroundColor: "#ffffff"
   },

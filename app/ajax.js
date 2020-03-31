@@ -1,6 +1,5 @@
 import axios from "axios";
-import API_ENDPOINT from './constants/constants';
-
+import { API_ENDPOINT } from "./constants/constants";
 
 export default {
   async fetchDamages() {

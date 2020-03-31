@@ -37,7 +37,6 @@ export default StyleSheet.create({
     right: width * 0.44,
     marginBottom: height * 0.42,
     bottom: "0%",
-    marginBottom: "45.75%",
     right: "44%",
     bottom: "0%",
     flexDirection: "row"

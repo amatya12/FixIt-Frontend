@@ -56,8 +56,8 @@ export class Afterclick extends React.Component {
             onPress={this.props.hideOverlay}
           />
         </View>
-        <Icon1 name="map-pin" style={style.mappin} size={50} color="#000000" />
-        <Icon name="target" style={style.target} size={50} color="#000000" />
+
+        <Icon name="target" style={style.target} size={50} color="#FF6347" />
       </View>
     );
   }

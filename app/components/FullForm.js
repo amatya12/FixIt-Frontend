@@ -11,7 +11,7 @@ import {
   Dimensions,
   ScrollView
 } from "react-native";
-import API_ENDPOINT from "../constants/constants";
+import { API_ENDPOINT } from "../constants/constants";
 import axios from "axios";
 import { Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
