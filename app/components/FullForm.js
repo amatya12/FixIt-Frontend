@@ -25,107 +25,9 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { Dropdown } from "react-native-material-dropdown";
 import { ViewMap } from "../components/ViewMap";
 import { Button } from "react-native-paper";
+import ajax from "../ajax";
 
-const items = [
-  {
-    name: "Signs and Lights",
-    id: 1,
-    children: [
-      {
-        name: "stop signs",
-        id: 1
-      },
-      {
-        name: "Street signs",
-        id: 2
-      },
-      {
-        name: "one way",
-        id: 3
-      },
-      {
-        name: "DO not enter",
-        id: 4
-      },
-      {
-        name: "Stop Lights",
-        id: 5
-      },
-      {
-        name: "Speed Limits",
-        id: 6
-      },
-      {
-        name: "Crossing Signs",
-        id: 7
-      },
-      {
-        name: "U Turn",
-        id: 8
-      },
-      {
-        name: "Warning Signs",
-        id: 9
-      }
-    ]
-  },
-  {
-    name: "Roads",
-    id: 4,
-    children: [
-      {
-        name: "potholes",
-        id: 11
-      },
-      {
-        name: "Debris",
-        id: 12
-      },
-      {
-        name: "Paints",
-        id: 13
-      },
-      {
-        name: "cracking",
-        id: 14
-      },
-      {
-        name: "washout",
-        id: 15
-      },
-      {
-        name: "street lights",
-        id: 16
-      },
-      {
-        name: "other",
-        id: 17
-      }
-    ]
-  },
-  {
-    name: "Roadside",
-    id: 5,
-    children: [
-      {
-        name: "Drainage",
-        id: 18
-      },
-      {
-        name: "grass cutting",
-        id: 19
-      },
-      {
-        name: "overgrowth",
-        id: 20
-      },
-      {
-        name: "other",
-        id: 21
-      }
-    ]
-  }
-];
+let item = [];
 export class FullForm extends React.Component {
   constructor(props) {
     super(props);
@@ -153,14 +55,15 @@ export class FullForm extends React.Component {
         imageUrl: this.state.imagebase64,
         latitude: this.state.latitude,
         longitude: this.state.longitude,
-        priority: this.state.priority
+        priority: this.state.priority,
+        location: this.state.location
       })
       .then(response => {
         console.log(response.data);
         console.log(response.status);
         this.props.fetchCoordinates();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
     this.props.modelclosed();
@@ -179,8 +82,10 @@ export class FullForm extends React.Component {
   onSelectedItemObjectsChange = subCategoryId => {
     console.log(subCategoryId); // should display [{id: '92iijs7yta', name: 'Ondo'}, ...]
   };
-  componentDidMount() {
+  async componentDidMount() {
     this.getPermissionAsync();
+    item = await ajax.fetchCategoriesWithSubCategories();
+    console.log("The categories are", item);
   }
 
   getPermissionAsync = async () => {
@@ -221,19 +126,19 @@ export class FullForm extends React.Component {
   ) {
     alert(
       "Issue: " +
-        issues +
-        " Location: " +
-        location +
-        " latitude: " +
-        latitude +
-        " longitude: " +
-        longitude +
-        "priority:" +
-        priority +
-        "subcategoryID:" +
-        subCategoryId +
-        "image:" +
-        image
+      issues +
+      " Location: " +
+      location +
+      " latitude: " +
+      latitude +
+      " longitude: " +
+      longitude +
+      "priority:" +
+      priority +
+      "subcategoryID:" +
+      subCategoryId +
+      "image:" +
+      image
     );
   }
 
@@ -255,8 +160,9 @@ export class FullForm extends React.Component {
 
           <View style={globalStyles.formelement}>
             <SectionedMultiSelect
-              items={items}
+              items={item}
               uniqueKey="id"
+              key="id"
               subKey="children"
               selectText="Choose some things..."
               showDropDowns={true}

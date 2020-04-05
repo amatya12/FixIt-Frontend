@@ -43,5 +43,17 @@ export default {
     } catch (e) {
       console.error(e);
     }
+  },
+
+  async fetchCategoriesWithSubCategories() {
+    try {
+      const result = await axios.get(`${API_ENDPOINT}/categoryfordropdown`);
+      console.log(result.data.data);
+      return result.data.data;
+
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 };
