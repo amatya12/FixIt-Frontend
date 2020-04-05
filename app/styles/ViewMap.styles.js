@@ -47,7 +47,7 @@ export default StyleSheet.create({
   marker: {
     position: "absolute",
 
-    right: "70%",
+    right: "80%",
     borderRadius: 20,
     bottom: "75%"
   },
@@ -61,7 +61,7 @@ export default StyleSheet.create({
   roadside: {
     position: "absolute",
 
-    right: "70%",
+    right: "69%",
     borderRadius: 20,
     bottom: "82%"
   },

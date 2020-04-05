@@ -18,6 +18,7 @@ import ActionButton from "react-native-action-button";
 import { Afterclick } from "../components/Afterclick";
 import Icon from "react-native-vector-icons/Ionicons";
 
+
 import ajax from "../ajax";
 
 let { width, height } = Dimensions.get("window");
@@ -75,10 +76,13 @@ export class ViewMap extends React.Component {
   }
   async fetchCoordinates() {
     const damages = await ajax.fetchDamages();
+    console.log("markers: ", damages);
+
     this.setState({ markers: damages.data });
   }
   async fetchCoordinatesForRoad() {
     const damages = await ajax.fetchDamagesforRoad();
+    console.log("The damages for road are", damages);
 
     this.setState({ markersForRoads: damages.data });
   }
@@ -92,22 +96,36 @@ export class ViewMap extends React.Component {
 
     this.setState({ markersForSigns: damages.data });
   }
+
+
+  // showmarker() {
+  //   const { isLoaded } = this.state;
+
+  //   console.log("THe initial value of isloaded", this.state.isLoaded);
+  //   this.setState({ isLoaded: !isLoaded });
+  //   console.log("The final value of isloaded", this.state.isLoaded);
+  //   setTimeout(() => {
+  //     console.log("The final value of isloaded", this.state.isLoaded);
+  //   });
+  // }
   async showmarker() {
-    const {
+    let {
       isLoaded,
-      isLoadedForRoad,
-      isLoadedForRoadSide,
-      isLoadedForSign
     } = this.state;
 
-    this.showMarkerForRoad();
-    this.showMarkerForRoadSide();
-    this.showMarkerForSign();
-    console.log("THe initial value of isloaded", isLoaded);
-    this.setState({ isLoaded: !isLoaded });
-    console.log("The final value of isloaded", isLoaded);
 
-    if (isLoaded == false) {
+
+    //console.log("THe initial value of isloaded", isLoaded);
+    isLoaded = !isLoaded;
+    this.setState({ isLoaded: isLoaded });
+    //console.log("The final value of isloaded", isLoaded);
+
+    if (isLoaded === true) {
+      this.showMarkerForRoad();
+      this.showMarkerForRoadSide();
+      this.showMarkerForSign();
+
+
       //console.log("The isLoaded value is", isloaded);
       this.setState({ isLoadedForRoad: true });
       // console.log("The isloaded value for road is", isLoadedForRoad);
@@ -119,20 +137,35 @@ export class ViewMap extends React.Component {
       this.setState({ isLoadedForSign: false });
     }
   }
+
+
+
   async showMarkerForRoad() {
-    this.fetchCoordinatesForRoad();
-    const { isLoadedForRoad } = this.state;
-    this.setState({ isLoadedForRoad: !isLoadedForRoad });
+    let { isLoadedForRoad } = this.state;
+    isLoadedForRoad = !isLoadedForRoad;
+    this.setState({ isLoadedForRoad: isLoadedForRoad });
+    if (isLoadedForRoad) {
+      console.log("i am here");
+      this.fetchCoordinatesForRoad();
+    }
   }
   async showMarkerForRoadSide() {
-    this.fetchCoordinatesForRoadSide();
-    const { isLoadedForRoadSide } = this.state;
-    this.setState({ isLoadedForRoadSide: !isLoadedForRoadSide });
+
+    let { isLoadedForRoadSide } = this.state;
+    isLoadedForRoadSide = !isLoadedForRoadSide;
+    this.setState({ isLoadedForRoadSide: isLoadedForRoadSide });
+    if (isLoadedForRoadSide) {
+      this.fetchCoordinatesForRoadSide();
+    }
+
   }
   async showMarkerForSign() {
-    this.fetchCoordinatesForSign();
-    const { isLoadedForSign } = this.state;
-    this.setState({ isLoadedForSign: !isLoadedForSign });
+    let { isLoadedForSign } = this.state;
+    isLoadedForSign = !isLoadedForSign;
+    this.setState({ isLoadedForSign: isLoadedForSign });
+    if (isLoadedForSign) {
+      this.fetchCoordinatesForSign();
+    }
   }
 
   picklocationHandler = event => {
@@ -228,9 +261,10 @@ export class ViewMap extends React.Component {
                   pinColor={"gold"}
                 >
                   <Callout>
-                    <Text>{markersForRoad.issues}</Text>
-                    <Text>{markersForRoad.location}</Text>
-                    <Text>Solved</Text>
+                    <Text>Issue:{markersForRoad.issues}</Text>
+                    <Text>Location: {markersForRoad.location}</Text>
+                    <Text>Date Created: {markersForRoad.dateCreated}</Text>
+                    <Text>Status: {markersForRoad.status}</Text>
                   </Callout>
                 </MapView.Marker>
               );
@@ -242,7 +276,16 @@ export class ViewMap extends React.Component {
                   key={index}
                   coordinate={markersForRoadSide.coordinates}
                   pinColor={"navy"}
-                ></MapView.Marker>
+                >
+                  <Callout>
+                    <Text>Issue: {markersForRoadSide.issues}</Text>
+                    <Text>Location: {markersForRoadSide.location}</Text>
+                    <Text>Date Created: {markersForRoadSide.dateCreated}</Text>
+                    <Text>Status: {markersForRoadSide.status} </Text>
+
+                  </Callout>
+
+                </MapView.Marker>
               );
             })}
           {this.state.isLoadedForSign &&
@@ -252,19 +295,18 @@ export class ViewMap extends React.Component {
                   key={index}
                   coordinate={markersForSign.coordinates}
                   pinColor={"plum"}
-                ></MapView.Marker>
+                >
+                  <Callout>
+                    <Text>Issue: {markersForSign.issues}</Text>
+                    <Text>Location: {markersForSign.location}</Text>
+                    <Text>Date Created: {markersForSign.dateCreated}</Text>
+                    <Text>Status: {markersForSign.status} </Text>
+                  </Callout>
+                </MapView.Marker>
               );
+
             })}
         </MapView>
-
-        <Button
-          onPress={this.showmarker}
-          mode="contained"
-          color={this.state.isLoaded ? "red" : "grey"}
-          style={styles.marker}
-        >
-          Damages
-        </Button>
         <Button
           onPress={this.showMarkerForRoad}
           mode="contained"
@@ -272,6 +314,15 @@ export class ViewMap extends React.Component {
           style={styles.road}
         >
           Road
+        </Button>
+
+        <Button
+          onPress={this.showmarker}
+          mode="contained"
+          color={this.state.isLoaded ? "red" : "grey"}
+          style={styles.marker}
+        >
+          All
         </Button>
         <Button
           onPress={this.showMarkerForRoadSide}
@@ -289,6 +340,8 @@ export class ViewMap extends React.Component {
         >
           Sign & Lights
         </Button>
+
+
 
         <FAB
           style={styles.gps}

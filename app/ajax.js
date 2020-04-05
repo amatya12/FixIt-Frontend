@@ -20,7 +20,7 @@ export default {
   },
   async fetchDamagesforRoadSide() {
     try {
-      const result = await axios.get(`${API_ENDPOINT}/damage/roadside`);
+      const result = await axios.get(`${API_ENDPOINT}/damage/RoadSides`);
       return result.data;
     } catch (e) {
       console.error(e);
@@ -28,7 +28,7 @@ export default {
   },
   async fetchDamagesforSign() {
     try {
-      const result = await axios.get(`${API_ENDPOINT}/damage/Signs and lights`);
+      const result = await axios.get(`${API_ENDPOINT}/damage/Signs and Lights`);
       return result.data;
     } catch (e) {
       console.error(e);
