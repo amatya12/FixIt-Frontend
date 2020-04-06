@@ -6,16 +6,24 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333"
   },
-
   input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: "7%",
-    margin: "2%",
-    fontSize: 18,
-    borderRadius: 6,
-    textAlignVertical: "top"
+    // borderWidth: 1,
+    // borderColor: "#ddd",
+    // paddingTop: "15%",
+    // margin: "2%",
+    // fontSize: 18,
+    // borderRadius: 6,
+    // textAlignVertical: "top"
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    paddingBottom: 20,
+
   },
+
+  test: {
+    margin: "2%"
+  },
+
   searchSection: {
     borderWidth: 1,
     borderColor: "#ddd",
@@ -28,15 +36,17 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   formView: {
-    margin: "3%",
+
+    marginTop: "8%",
+    marginBottom: "0%",
     borderRadius: 20,
     borderWidth: 2,
     borderColor: "black",
     backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
   },
   formelement: {
-    margin: "2%",
-    paddingLeft: "1%",
+    margin: "0%",
+    paddingLeft: "5%",
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 6
@@ -44,7 +54,6 @@ export const globalStyles = StyleSheet.create({
   gpscord: {
     width: "80%",
     margin: "8%",
-
     borderColor: "black",
     borderRadius: 2
   },
