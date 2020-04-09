@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { API_ENDPOINT } from "../constants/constants";
 import axios from "axios";
@@ -22,23 +22,23 @@ import Icon1 from "react-native-vector-icons/FontAwesome5";
 import { FAB } from "react-native-paper";
 import style from "../styles/AfterClick.styles";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { Form, FormItem } from 'react-native-form-validation';
+import { Form, FormItem } from "react-native-form-validation";
 import { Dropdown } from "react-native-material-dropdown";
 import { ViewMap } from "../components/ViewMap";
 import { Button } from "react-native-paper";
 import ajax from "../ajax";
-
+import { validateAll } from "indicative/validator";
 let item = [];
-let data = [{
-  value: 'High'
-},
-{
-  value: 'Medium'
-}
-  ,
-{
-  value: 'Low'
-}
+const data = [
+  {
+    value: "High",
+  },
+  {
+    value: "Medium",
+  },
+  {
+    value: "Low",
+  },
 ];
 export class FullForm extends React.Component {
   constructor(props) {
@@ -53,52 +53,81 @@ export class FullForm extends React.Component {
       location: "",
       latitude: this.props.lat,
       longitude: this.props.long,
-      priority: ""
+      priority: "",
+      error: {},
+      userAllData: "",
+      userData: "",
     };
     this.submit = this.submit.bind(this);
-    this.postInitialIssue = this.postInitialIssue.bind(this);
+    this.confirm = this.confirm.bind(this);
   }
 
-  postInitialIssue() {
-    axios
-      .post(`${API_ENDPOINT}/issue`, {
-        issues: this.state.issues,
-        subCategoryId: this.state.subCategoryId,
-        imageUrl: this.state.imagebase64,
-        latitude: this.state.latitude,
-        longitude: this.state.longitude,
-        priority: this.state.priority,
-        location: this.state.location
-      })
-      .then(response => {
-        console.log(response.data);
-        console.log(response.status);
-        //this.props.fetchCoordinates();
-        this.props.modelclosed();
-      })
-      .catch(function (error) {
-        console.log(error);
+  confirm = async (data) => {
+    const rules = {
+      issues: "required|string",
+      location: "required|string",
+      subCategoryId: "required|min:1",
+      priority: "required|string",
+    };
+
+    const messages = {
+      required: (field) => `${field} is required`,
+      "issues.issues": "Issues is required ",
+      "subCategoryId.min": "Please choose one or more category",
+      "priority.priority": " Priority is required ",
+      "location.location": " Location is required ",
+    };
+
+    try {
+      console.log("posteed");
+
+      await validateAll(data, rules, messages);
+
+      const response = await axios.post(`${API_ENDPOINT}/issue`, {
+        issues: data.issues,
+        subCategoryId: data.subCategoryId,
+        imageUrl: data.imagebase64,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        priority: data.priority,
+        location: data.location,
       });
 
+      this.setState({
+        userData: response,
+        userAllData: response.data.data,
+      });
+      this.props.modelclosed();
+      alert(" posted succesfully");
+    } catch (errors) {
+      const formattedErrors = {};
 
-    // axios.get("https://api.github.com/users/mapbox").then(response => {
-    //   console.log(response.data);
-    //   console.log(response.status);
-    // });
-    alert(" posted succesfully");
-  }
+      if (errors.response && errors.response.status === 422) {
+        formattedErrors["issues"] = errors.response.data["issues"][0];
+        this.setState({
+          error: formattedErrors,
+        });
+      } else {
+        errors.forEach(
+          (error) => (formattedErrors[error.field] = error.message)
+        );
 
-  onSelectedItemsChange = subCategoryId => {
-    this.setState({ subCategoryId });
-    console.log(subCategoryId);
+        this.setState({
+          error: formattedErrors,
+        });
+      }
+    }
   };
-  onSelectedItemObjectsChange = subCategoryId => {
-    console.log(subCategoryId); // should display [{id: '92iijs7yta', name: 'Ondo'}, ...]
+
+  onSelectedItemsChange = (subCategoryId) => {
+    this.setState({ subCategoryId });
+  };
+  onSelectedItemObjectsChange = (subCategoryId) => {
+    // should display [{id: '92iijs7yta', name: 'Ondo'}, ...]
   };
   async componentDidMount() {
     this.getPermissionAsync();
     item = await ajax.fetchCategoriesWithSubCategories();
-    console.log("The categories are", item);
   }
 
   getPermissionAsync = async () => {
@@ -114,7 +143,7 @@ export class FullForm extends React.Component {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64: true
+      base64: true,
     });
 
     if (!result.cancelled) {
@@ -137,19 +166,19 @@ export class FullForm extends React.Component {
   ) {
     alert(
       "Issue: " +
-      issues +
-      " Location: " +
-      location +
-      " latitude: " +
-      latitude +
-      " longitude: " +
-      longitude +
-      "priority:" +
-      priority +
-      "subcategoryID:" +
-      subCategoryId +
-      "image:" +
-      image
+        issues +
+        " Location: " +
+        location +
+        " latitude: " +
+        latitude +
+        " longitude: " +
+        longitude +
+        "priority:" +
+        priority +
+        "subcategoryID:" +
+        subCategoryId +
+        "image:" +
+        image
     );
   }
 
@@ -159,25 +188,48 @@ export class FullForm extends React.Component {
       <View style={globalStyles.formView}>
         <Form>
           <ScrollView style={globalStyles.scroll}>
-            <Text style={{ marginLeft: "35%", marginBottom: "8%", fontSize: 20 }}>Post an Issue</Text>
-            <Text style={{ marginLeft: "2%", fontSize: 20 }}>What's the issue?</Text>
+            <View style={{ backgroundColor: "#4267B2" }}>
+              <Text
+                style={{
+                  marginTop: "4%",
+                  marginLeft: "35%",
+                  marginBottom: "8%",
+                  fontSize: 20,
+                }}
+              >
+                Post an Issue
+              </Text>
+              <Text style={{ color: "red", fontSize: 20 }}>
+                {this.state.Error}
+              </Text>
+            </View>
+
+            <Text style={{ marginLeft: "2%", fontSize: 20 }}>
+              What's the issue?
+            </Text>
             <FormItem isRequired={true}>
               <View style={globalStyles.test}>
                 <TextInput
                   multiline={true}
                   style={globalStyles.input}
-                  // placeholder="Issues"
-                  //label="Issues"
-                  blurOnSubmit={false}
+                  //onBlur={() => this.issueValidator()}
                   enablesReturnKeyAutomatically={true}
-                  onChangeText={text => this.setState({ issues: text })}
+                  onChangeText={(text) => this.setState({ issues: text })}
                   value={this.state.issues}
                 />
               </View>
+              {this.state.error["issues"] && (
+                <Text style={{ color: "red" }}>
+                  {this.state.error["issues"]}
+                </Text>
+              )}
             </FormItem>
+
             {/* /<View style={globalStyles.formelement}> */}
             <View style={globalStyles.test}>
-              <Text style={{ marginLeft: "0%", fontSize: 20 }}>Choose a Category:</Text>
+              <Text style={{ marginLeft: "0%", fontSize: 20 }}>
+                Choose a Category:
+              </Text>
               <SectionedMultiSelect
                 items={item}
                 uniqueKey="id"
@@ -190,29 +242,28 @@ export class FullForm extends React.Component {
                 // onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
                 selectedItems={this.state.subCategoryId}
               />
+              {this.state.error["subCategoryId"] && (
+                <Text style={{ color: "red" }}>
+                  {this.state.error["subCategoryId"]}
+                </Text>
+              )}
             </View>
 
-            {/* </View> */}
-
-            {/* <View style={globalStyles.formelement}> */}
-            {/* <Picker
-            mode="dialog"
-            selectedValue={this.state.priority}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ priority: itemValue })
-            }
-          >
-            <Picker.Item label="High" value="high" />
-            <Picker.Item label="medium" value="medium" />
-            <Picker.Item label="low" value="low" />
-          </Picker> */}
-            {/* </View> */}
             <View style={globalStyles.test}>
-              <Text style={{ marginLeft: "1%", fontSize: 20 }}>Priority Level:</Text>
+              <Text style={{ marginLeft: "1%", fontSize: 20 }}>
+                Priority Level:
+              </Text>
               <Dropdown
                 data={data}
-                onChangeText={(itemValue, itemIndex) => this.setState({ priority: itemValue })}
+                onChangeText={(itemValue, itemIndex) =>
+                  this.setState({ priority: itemValue })
+                }
               />
+              {this.state.error["priority"] && (
+                <Text style={{ color: "red" }}>
+                  {this.state.error["priority"]}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.test}>
               <Text style={{ marginLeft: "1%", fontSize: 20 }}>Location:</Text>
@@ -220,16 +271,21 @@ export class FullForm extends React.Component {
                 style={globalStyles.input}
                 multiline={true}
                 //placeholder="Location"
-                onChangeText={text => this.setState({ location: text })}
+                onChangeText={(text) => this.setState({ location: text })}
                 value={this.state.location}
               />
+              {this.state.error["location"] && (
+                <Text style={{ color: "red" }}>
+                  {this.state.error["location"]}
+                </Text>
+              )}
             </View>
 
             {/* <View style={globalStyles.searchSection}> */}
             <View style={globalStyles.test}>
               <Icon1
                 style={{
-                  padding: 10
+                  padding: 10,
                 }}
                 name="camera"
                 size={25}
@@ -244,23 +300,24 @@ export class FullForm extends React.Component {
                 editable={false}
                 value={this.state.image}
               />
+
               {/* </View> */}
 
-              {
-                image && (
-                  <TouchableOpacity>
-                    <Image
-                      source={{
-                        uri: image
-                      }}
-                      style={{ margin: 20, width: 300, height: 200 }}
-                    />
-                  </TouchableOpacity>
-                )
-              }
+              {image && (
+                <TouchableOpacity>
+                  <Image
+                    source={{
+                      uri: image,
+                    }}
+                    style={{ margin: 20, width: 300, height: 200 }}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
 
-            <Text style={{ marginLeft: "2%", fontSize: 20 }}>GPS Coordinate:</Text>
+            <Text style={{ marginLeft: "2%", fontSize: 20 }}>
+              GPS Coordinate:
+            </Text>
 
             <View style={globalStyles.gpscord}>
               <View style={{ flex: 1, flexDirection: "column" }}>
@@ -286,21 +343,24 @@ export class FullForm extends React.Component {
                 style={{ flex: 1, marginRight: "1%" }}
               >
                 Cancel
-            </Button>
+              </Button>
 
               <Button
                 mode="contained"
                 style={{ flex: 1, marginRight: "1%" }}
                 color="green"
                 borderRadius="10"
-                onPress={this.postInitialIssue}
+                onPress={() => this.confirm(this.state)}
               >
                 Submit
-            </Button>
+              </Button>
             </View>
-          </ScrollView >
+            <Text style={{ color: "red", fontSize: 20 }}>
+              {this.state.Error}
+            </Text>
+          </ScrollView>
         </Form>
-      </View >
+      </View>
     );
   }
 }

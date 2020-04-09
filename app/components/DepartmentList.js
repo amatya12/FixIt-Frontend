@@ -1,13 +1,13 @@
 import React from "react";
 import ajax from "../ajax";
 import { View, Text, StyleSheet } from "react-native";
-import { Card, Title, Paragraph } from 'react-native-paper';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { openUrlInApp, openUrl } from '../utils/intents';
-import styles from '../styles/DepartmentList.styles';
+import { Card, Title, Paragraph } from "react-native-paper";
+import { TouchableHighlight } from "react-native-gesture-handler";
+import { openUrlInApp, openUrl } from "../utils/intents";
+import styles from "../styles/DepartmentList.styles";
 class DepartmentList extends React.Component {
   state = {
-    departments: []
+    departments: [],
   };
   async componentDidMount() {
     const departments = await ajax.fetchDepartments();
@@ -20,26 +20,24 @@ class DepartmentList extends React.Component {
 
   handleItemClick(item) {
     console.log(item.url);
-    openUrl('https://www.townofabitasprings.com');
+
+    openUrl(item.url);
   }
   render() {
     return (
       <View>
-
-        {this.state.departments.map(department => (
+        {this.state.departments.map((department) => (
           <TouchableHighlight
             key={department.id}
             onPress={() => this.handleItemClick(department)}
           >
-            <Card style={styles.card} n >
+            <Card style={styles.card} n>
               <Card.Content>
                 <Title>{department.name}</Title>
                 <Paragraph>{department.url}</Paragraph>
                 <Paragraph>Location: {department.location}.</Paragraph>
                 <Paragraph>PhoneNumber: {department.phoneNumber}</Paragraph>
-
               </Card.Content>
-
             </Card>
           </TouchableHighlight>
         ))}

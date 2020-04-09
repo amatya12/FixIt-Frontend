@@ -8,7 +8,7 @@ import {
   Text,
   Animated,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import RetroMapStyles from "../MapStyles/RetroMapStyles.json";
@@ -17,7 +17,7 @@ import styles from "../styles/ViewMap.styles";
 import ActionButton from "react-native-action-button";
 import { Afterclick } from "../components/Afterclick";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import Geocoder from "react-native-geocoding";
 
 import ajax from "../ajax";
 
@@ -41,20 +41,20 @@ export class ViewMap extends React.Component {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitudeDelta: LONGITUDE_DELTA,
       },
       initialRegion: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        longitudeDelta: LONGITUDE_DELTA,
       },
       mapType: "satellite",
       show: false,
       isLoaded: false,
       isLoadedForRoad: false,
       isLoadedForRoadSide: false,
-      isLoadedForSign: false
+      isLoadedForSign: false,
     };
     this.toggleDiv = this.toggleDiv.bind(this);
     this.hide_overlay = this.hide_overlay.bind(this);
@@ -73,16 +73,15 @@ export class ViewMap extends React.Component {
     );
     this.showMarkerForSign = this.showMarkerForSign.bind(this);
     this.fetchCoordinatesForSign = this.fetchCoordinatesForSign.bind(this);
+    this.getData = this.getData.bind(this);
   }
   async fetchCoordinates() {
     const damages = await ajax.fetchDamages();
-    console.log("markers: ", damages);
 
     this.setState({ markers: damages.data });
   }
   async fetchCoordinatesForRoad() {
     const damages = await ajax.fetchDamagesforRoad();
-    console.log("The damages for road are", damages);
 
     this.setState({ markersForRoads: damages.data });
   }
@@ -97,23 +96,8 @@ export class ViewMap extends React.Component {
     this.setState({ markersForSigns: damages.data });
   }
 
-
-  // showmarker() {
-  //   const { isLoaded } = this.state;
-
-  //   console.log("THe initial value of isloaded", this.state.isLoaded);
-  //   this.setState({ isLoaded: !isLoaded });
-  //   console.log("The final value of isloaded", this.state.isLoaded);
-  //   setTimeout(() => {
-  //     console.log("The final value of isloaded", this.state.isLoaded);
-  //   });
-  // }
   async showmarker() {
-    let {
-      isLoaded,
-    } = this.state;
-
-
+    let { isLoaded } = this.state;
 
     //console.log("THe initial value of isloaded", isLoaded);
     isLoaded = !isLoaded;
@@ -124,7 +108,6 @@ export class ViewMap extends React.Component {
       this.showMarkerForRoad();
       this.showMarkerForRoadSide();
       this.showMarkerForSign();
-
 
       //console.log("The isLoaded value is", isloaded);
       this.setState({ isLoadedForRoad: true });
@@ -138,26 +121,30 @@ export class ViewMap extends React.Component {
     }
   }
 
-
+  getData() {
+    Geocoder.from(41.89, 12.49)
+      .then((json) => {
+        var addressComponent = json.results[0].address_components[0];
+        console.log(addressComponent);
+      })
+      .catch((error) => console.warn(error));
+  }
 
   async showMarkerForRoad() {
     let { isLoadedForRoad } = this.state;
     isLoadedForRoad = !isLoadedForRoad;
     this.setState({ isLoadedForRoad: isLoadedForRoad });
     if (isLoadedForRoad) {
-      console.log("i am here");
       this.fetchCoordinatesForRoad();
     }
   }
   async showMarkerForRoadSide() {
-
     let { isLoadedForRoadSide } = this.state;
     isLoadedForRoadSide = !isLoadedForRoadSide;
     this.setState({ isLoadedForRoadSide: isLoadedForRoadSide });
     if (isLoadedForRoadSide) {
       this.fetchCoordinatesForRoadSide();
     }
-
   }
   async showMarkerForSign() {
     let { isLoadedForSign } = this.state;
@@ -168,16 +155,16 @@ export class ViewMap extends React.Component {
     }
   }
 
-  picklocationHandler = event => {
+  picklocationHandler = (event) => {
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         this.map.animateToRegion({
           ...this.state.userLocation,
           latitude: position.coords.latitude,
-          longitude: position.coords.longitude
+          longitude: position.coords.longitude,
         });
       },
-      error => console.log(error.message),
+      (error) => console.log(error.message),
       { enableHighAccuracy: true, maximumAge: 1000 }
     );
   };
@@ -197,15 +184,13 @@ export class ViewMap extends React.Component {
     Alert.alert("Button Clicked");
   };
   switchMapType = () => {
-    console.log("changing");
     this.setState({
-      mapType: this.state.mapType === "standard" ? "satellite" : "standard"
+      mapType: this.state.mapType === "standard" ? "satellite" : "standard",
     });
   };
   switchToSatellite = () => {
-    console.log("changing");
     this.setState({
-      mapType: "satellite"
+      mapType: "satellite",
     });
   };
 
@@ -213,9 +198,8 @@ export class ViewMap extends React.Component {
   //   Platform.OS === 'ios' && this.map.animateToRegion(region = { latitude: LATITUDE, longitude: LONGITUDE }, 0.1); // TODO remove once the initialRegion is fixed in the module
   // };
   switchToStandard = () => {
-    console.log("changing");
     this.setState({
-      mapType: "standard"
+      mapType: "standard",
     });
   };
 
@@ -224,7 +208,7 @@ export class ViewMap extends React.Component {
       <View style={styles.map}>
         <MapView
           provider={PROVIDER_GOOGLE}
-          ref={map => (this.map = map)}
+          ref={(map) => (this.map = map)}
           style={styles.container}
           customMapStyle={RetroMapStyles}
           mapType={this.state.mapType}
@@ -237,10 +221,8 @@ export class ViewMap extends React.Component {
           showsIndoors={true}
           //showsMyLocationButton={true}
           //onMapReady={this.onMapReady}
-          onRegionChangeComplete={region => {
-            console.log(region);
+          onRegionChangeComplete={(region) => {
             this.setState({ userLocation: region });
-            console.log("The new state is", this.state.userLocation);
           }}
         >
           {/* {this.state.isloaded &&
@@ -282,9 +264,7 @@ export class ViewMap extends React.Component {
                     <Text>Location: {markersForRoadSide.location}</Text>
                     <Text>Date Created: {markersForRoadSide.dateCreated}</Text>
                     <Text>Status: {markersForRoadSide.status} </Text>
-
                   </Callout>
-
                 </MapView.Marker>
               );
             })}
@@ -304,7 +284,6 @@ export class ViewMap extends React.Component {
                   </Callout>
                 </MapView.Marker>
               );
-
             })}
         </MapView>
         <Button
@@ -340,8 +319,6 @@ export class ViewMap extends React.Component {
         >
           Sign & Lights
         </Button>
-
-
 
         <FAB
           style={styles.gps}
@@ -387,15 +364,6 @@ export class ViewMap extends React.Component {
         <View style={styles.latlong}>
           <Text>Latitude:: {this.state.userLocation.latitude}</Text>
           <Text>Longitude:: {this.state.userLocation.longitude}</Text>
-          {/* <TouchableOpacity
-            onPress={() => {
-              this.getData();
-            }}
-          >
-            <Text>Address</Text>
-          </TouchableOpacity> */}
-
-          {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
         </View>
       </View>
     );
@@ -404,27 +372,27 @@ export class ViewMap extends React.Component {
     this.picklocationHandler();
 
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         this.setState({
           initialRegion: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-          }
+            longitudeDelta: LONGITUDE_DELTA,
+          },
         });
       },
-      error => console.log(error.message),
+      (error) => console.log(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    this.watchID = navigator.geolocation.watchPosition(position => {
+    navigator.geolocation.watchPosition((position) => {
       this.setState({
         initialRegion: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
           latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA
-        }
+          longitudeDelta: LONGITUDE_DELTA,
+        },
       });
     });
   }

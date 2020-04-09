@@ -4,7 +4,7 @@ export const globalStyles = StyleSheet.create({
   titleText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333"
+    color: "#333",
   },
   input: {
     // borderWidth: 1,
@@ -14,14 +14,13 @@ export const globalStyles = StyleSheet.create({
     // fontSize: 18,
     // borderRadius: 6,
     // textAlignVertical: "top"
-    borderBottomColor: 'black',
+    borderBottomColor: "black",
     borderBottomWidth: 1,
     paddingBottom: 20,
-
   },
 
   test: {
-    margin: "2%"
+    margin: "2%",
   },
 
   searchSection: {
@@ -33,35 +32,37 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 6,
     flexDirection: "row",
 
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   formView: {
-
     marginTop: "8%",
     marginBottom: "0%",
+    marginLeft: "4%",
+    marginRight: "4%",
+
     borderRadius: 20,
     borderWidth: 2,
     borderColor: "black",
-    backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white"
+    backgroundColor: /*//"rgba(0,0,0,0.5)"*/ "white",
   },
   formelement: {
     margin: "0%",
     paddingLeft: "5%",
     borderWidth: 1,
     borderColor: "#ddd",
-    borderRadius: 6
+    borderRadius: 6,
   },
   gpscord: {
     width: "80%",
     margin: "8%",
     borderColor: "black",
-    borderRadius: 2
+    borderRadius: 2,
   },
   scroll: {
-    margin: "2%"
+    margin: "2%",
   },
   buttonSection: {
     flexDirection: "row",
-    width: "95%"
-  }
+    width: "95%",
+  },
 });
