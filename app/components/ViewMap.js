@@ -28,7 +28,6 @@ const LATITUDE = 30.508067876956304;
 const LONGITUDE = -90.47499272972345;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const pinColor = "#000000";
 
 export class ViewMap extends React.Component {
   constructor() {
@@ -55,7 +54,9 @@ export class ViewMap extends React.Component {
       isLoadedForRoad: false,
       isLoadedForRoadSide: false,
       isLoadedForSign: false,
+      error: null,
     };
+
     this.toggleDiv = this.toggleDiv.bind(this);
     this.hide_overlay = this.hide_overlay.bind(this);
     // this.autolocate = this.autolocate.bind(this);
@@ -73,8 +74,9 @@ export class ViewMap extends React.Component {
     );
     this.showMarkerForSign = this.showMarkerForSign.bind(this);
     this.fetchCoordinatesForSign = this.fetchCoordinatesForSign.bind(this);
-    this.getData = this.getData.bind(this);
+    //this.getData = this.getData.bind(this);
   }
+
   async fetchCoordinates() {
     const damages = await ajax.fetchDamages();
 
@@ -121,14 +123,14 @@ export class ViewMap extends React.Component {
     }
   }
 
-  getData() {
+  /**getData() {
     Geocoder.from(41.89, 12.49)
       .then((json) => {
         var addressComponent = json.results[0].address_components[0];
         console.log(addressComponent);
       })
       .catch((error) => console.warn(error));
-  }
+  }**/
 
   async showMarkerForRoad() {
     let { isLoadedForRoad } = this.state;
@@ -202,6 +204,44 @@ export class ViewMap extends React.Component {
       mapType: "standard",
     });
   };
+
+  async componentDidMount() {
+    this.picklocationHandler();
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          initialRegion: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },
+          error: null,
+        });
+      },
+      (error) => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+    this.watchID = navigator.geolocation.watchPosition(
+      (position) => {
+        this.setState({
+          initialRegion: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },
+          error: null,
+        });
+      },
+      (error) => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
 
   render() {
     return (
@@ -367,36 +407,5 @@ export class ViewMap extends React.Component {
         </View>
       </View>
     );
-  }
-  async componentDidMount() {
-    this.picklocationHandler();
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          initialRegion: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          },
-        });
-      },
-      (error) => console.log(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-    navigator.geolocation.watchPosition((position) => {
-      this.setState({
-        initialRegion: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        },
-      });
-    });
-  }
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID);
   }
 }

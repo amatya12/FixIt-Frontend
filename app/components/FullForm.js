@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import {
   View,
-  StyleSheet,
-  Modal,
-  Picker,
   Text,
   TextInput,
   TouchableOpacity,
-  Dimensions,
   ScrollView,
 } from "react-native";
 import { API_ENDPOINT } from "../constants/constants";
@@ -24,7 +20,7 @@ import style from "../styles/AfterClick.styles";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { Form, FormItem } from "react-native-form-validation";
 import { Dropdown } from "react-native-material-dropdown";
-import { ViewMap } from "../components/ViewMap";
+
 import { Button } from "react-native-paper";
 import ajax from "../ajax";
 import { validateAll } from "indicative/validator";
